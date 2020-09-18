@@ -33,3 +33,16 @@ Vue.use(SwipeItem);
 import { Lazyload } from 'vant';
 
 Vue.use(Lazyload)
+// 搜索
+import { Search } from 'vant';
+
+Vue.use(Search);
+// 下拉菜单
+import { DropdownMenu, DropdownItem } from 'vant';
+
+Vue.use(DropdownMenu);
+Vue.use(DropdownItem);
+// 下拉加载
+import { List } from 'vant';
+
+Vue.use(List);

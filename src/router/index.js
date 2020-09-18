@@ -43,7 +43,70 @@ const routes = [{
       title: '积分明细',
     }
   },
-
+  {
+    path: '/service',
+    name: 'service',
+    component: resolve => require(['pages/service/service'], resolve),
+    meta: {
+      title: '享服务',
+    }
+  },
+  {
+    path: '/serviceList',
+    name: 'serviceList',
+    component: resolve => require(['pages/serviceList/serviceList'], resolve),
+    meta: {
+      title: '更多享服务',
+    }
+  },
+  {
+    path: '/serviceDetail',
+    name: 'serviceDetail',
+    component: resolve => require(['pages/serviceDetail/serviceDetail'], resolve),
+    meta: {
+      title: '商品详情',
+    }
+  },
+  {
+    path: '/result',
+    name: 'result',
+    component: resolve => require(['pages/result/result'], resolve),
+    meta: {
+      title: '兑换失败',
+    }
+  },
+  {
+    path: '/order',
+    name: 'order',
+    component: resolve => require(['pages/order/order'], resolve),
+    meta: {
+      title: '查看订单',
+    }
+  },
+  {
+    path: '/signIn',
+    name: 'signIn',
+    component: resolve => require(['pages/signIn/signIn'], resolve),
+    meta: {
+      title: '账号登录',
+    }
+  },
+  {
+    path: '/personCenter',
+    name: 'personCenter',
+    component: resolve => require(['pages/personCenter/personCenter'], resolve),
+    meta: {
+      title: '个人中心',
+    }
+  },
+  {
+    path: '/orderList',
+    name: 'orderList',
+    component: resolve => require(['pages/orderList/orderList'], resolve),
+    meta: {
+      title: '查看订单',
+    }
+  },
 
 
 

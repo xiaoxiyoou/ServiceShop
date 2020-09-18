@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import 'assets/js/vant'
 import 'assets/js/noScaling'
-// import share from 'assets/js/share'
+import share from 'assets/js/share'
 import 'assets/css/reset.css'
 import 'amfe-flexible'
 import store from './store/index'
@@ -17,7 +17,7 @@ Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 Vue.prototype.$cookies = VueCookies
 import "../node_modules/swiper/css/swiper.css"
-// share(document.title,document.title)
+share(document.title,document.title)
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title

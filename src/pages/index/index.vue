@@ -1,5 +1,10 @@
 <template>
   <div class="container col a-c">
+    <div class="head-wrap row a-c ">
+      <img class="headImg" src="./headImg.png" alt="">
+      <div class="headName">林小小</div>
+      <div class="headbtn row a-c j-c" @click="signIn">个人中心</div>
+    </div>
     <div class="swiper-wrapper col a-c">
       <van-swipe :autoplay="3000" indicator-color="#686194">
         <van-swipe-item v-for="(image, index) in images" :key="index">
@@ -8,7 +13,7 @@
       </van-swipe>
     </div>
     <div class="mid-wrap row j-b">
-      <div class="mid-item" @click="integral" >
+      <div class="mid-item" @click="integral">
         <img class="mid-img" src="./block_1.png" alt="" />
         <div class="mid-title">当前积分</div>
         <div class="mid-des row a-c">365200 <img class="" src="./arrow.png" alt="" /></div>
@@ -22,7 +27,7 @@
     <div class="bar"></div>
     <!-- 导航栏 -->
     <div class="grid-wrap">
-      <div class="grid-title row a-c j-b">
+      <div class="grid-title row a-c j-b" @click="service">
         <div class="grid-title-left row a-c">
           <div class="vertical"></div>
           <div class="grid-title-text">享服务</div>
@@ -33,26 +38,11 @@
         </div>
       </div>
       <div class="grid-list row a-c j-b">
-        <div class="grid-item col a-c j-c">
-          <img class="grid-item-img" src="./nav_1.png" alt="" />
-          <div class="grid-item-text">VI设计</div>
+        <div class="grid-item col a-c j-c" v-for="(item,index) in cateList" :key="index" @click="serviceList(item.id)">
+          <img class="grid-item-img" :src="item.icon" alt="" />
+          <div class="grid-item-text">{{item.name}}</div>
         </div>
-        <div class="grid-item col a-c j-c">
-          <img class="grid-item-img" src="./nav_2.png" alt="" />
-          <div class="grid-item-text">软件开发</div>
-        </div>
-        <div class="grid-item col a-c j-c">
-          <img class="grid-item-img" src="./nav_3.png" alt="" />
-          <div class="grid-item-text">视频包装</div>
-        </div>
-        <div class="grid-item col a-c j-c">
-          <img class="grid-item-img" src="./nav_4.png" alt="" />
-          <div class="grid-item-text">导师咨询</div>
-        </div>
-        <div class="grid-item col a-c j-c">
-          <img class="grid-item-img" src="./nav_5.png" alt="" />
-          <div class="grid-item-text">销售用品</div>
-        </div>
+
       </div>
     </div>
     <div class="bar"></div>
@@ -63,7 +53,7 @@
           <div class="grid-title-text">猜你喜欢</div>
         </div>
       </div>
-      <div class="goods-wrap row j-b f-w">
+      <div class="goods-wrap row j-b f-w" @click="serviceDetail(1)">
         <div class="goods-item">
           <img class="goods-img" src="./img_url.png" alt="">
           <div class="goods-title">网站建设定制开发</div>
@@ -85,7 +75,8 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import { Toast } from 'vant';
+import { cate, list } from 'api/index'
+// import { Toast } from 'vant';
 export default {
   data() {
     return {
@@ -94,16 +85,19 @@ export default {
         require('./swiper.png'),
         require('./swiper.png')
       ],
+      cateList: []
 
 
     }
   },
   created() {
-    Toast.loading({
-      forbidClick: true
-    })
+    // Toast.loading({
+    //   forbidClick: true
+    // })
   },
   mounted() {
+    this._cate()
+    this._list(1, 10)
 
 
 
@@ -113,11 +107,60 @@ export default {
   destroy() {
   },
   methods: {
+    _cate() {
+      cate({
+      }).then(res => {
+        console.log('分类接口', res)
+        this.cateList = res.data.cate
+
+      })
+
+    },
+    _list(page, size) {
+      list({
+        page,
+        size,
+        recom: 1
+      }).then(res => {
+        console.log('列表接口', res)
+
+      })
+
+    },
+    serviceList(id) {
+      this.$router.push({
+        path: '/serviceList',
+        query: {
+          id: id,
+        }
+      })
+    },
+    signIn() {
+      this.$router.push({
+        path: '/signIn',
+      })
+    },
+    serviceDetail(flag) {
+      this.$router.push({
+        path: '/serviceDetail',
+        query: {
+          id: flag,
+        }
+      })
+    },
+    // 享服务
+    service() {
+      this.$router.push({
+        path: '/service',
+      })
+    },
+    // 如何获得
     getCard() {
       this.$router.push({
         path: '/getCard',
       })
     },
+    //积分
     integral() {
       this.$router.push({
         path: '/integral',
@@ -136,11 +179,32 @@ export default {
   top 0px
   width 100%
   height 100%
+  .head-wrap
+    height 121px
+    width 696px
+    position relative
+    .headImg
+      width 0.82rem
+      height 0.82rem
+      border-radius 50%
+    .headName
+      color #292929
+      font-size 25px
+      margin-left 10px
+    .headbtn
+      position absolute
+      right 0
+      width 136px
+      height 44px
+      border-radius 22px
+      color #ffffff
+      font-size 24px
+      background-color #665d91
   .swiper-wrapper
     width 100%
     .van-swipe
       width 92.8%
-      margin-top 10.5px
+      // margin-top 10.5px
       margin-bottom 10px
       border-radius 5px
       height 111px
@@ -199,7 +263,7 @@ export default {
     width 100%
     .grid-title
       padding 0 38px 0 20px
-      height 79px
+      height 90px
       .grid-title-left
         .vertical
           width 7px

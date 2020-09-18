@@ -1,7 +1,9 @@
 import axios from 'axios'
 import store from './../store/index'
 import qs from 'qs'
-
+let uid = localStorage.getItem('userid')
+let openid = localStorage.getItem('openid')
+let token = localStorage.getItem('token')
 
 export default function ajax(url = '', params = {}, type = 'GET') {
   let promise;
@@ -21,11 +23,24 @@ export default function ajax(url = '', params = {}, type = 'GET') {
       // 1.4 拼接完整路径
       url += '?' + paramsStr;
       // 1.5 发起get请求
-      promise = axios.get(url)
+      promise = axios.get(url, {
+        headers: {
+          'uid': uid,
+          'usrkey': openid,
+          'token': token,
+        }
+      })
       store.dispatch('setStatus', true)
     } else if (type === 'POST') {
       // 1.6 发起post请求
-      promise = axios.post(url, qs.stringify(params),{ headers: { 'Content-Type':'application/x-www-form-urlencoded' } });
+      promise = axios.post(url, qs.stringify(params), {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'uid': uid,
+          'usrkey': openid,
+          'token': token,
+        }
+      });
       store.dispatch('setStatus', true)
     }
     // 1.7 返回结果

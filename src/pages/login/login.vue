@@ -29,10 +29,10 @@ export default {
     },
 
     GetCode: function (sid) {
-      // let redirectUrl = 'http://192.168.8.151:8080/wisdom/#' + this.$cookies.get('fromUrl')
-      // let redirectUrl = 'http://b.fuyulove.com/wisdom/#' + this.$cookies.get('fromUrl')
+
       let redirectUrl = window.location.href
-      let url = 'http://passport.fuyulove.com/connect/authorize?sid=' + sid + '&redirect_uri=' + redirectUrl;
+      // let url = 'http://002.app.fuyulove.com/connect/authorize?sid=' + sid + '&redirect_uri=' + redirectUrl;
+      let url = 'http://jfmall.app.fuyulove.com/connect/Authorize?sid=' + sid + '&redirect_uri=' + redirectUrl;
       window.location.href = url
     },
 

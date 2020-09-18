@@ -1,18 +1,21 @@
+var wx = require('weixin-js-sdk')
 import Vue from 'vue'
 import axios from 'axios'
-var wx = require('weixin-js-sdk')
-export default function wxShare({
-  desc
-} = {}) { 
-  let link = 'http://jfmall.app.fuyulove.com/goods/index.html/#' +  localStorage.getItem('fromUrl')
+export const shareConfig = (
+  title,
+  link,
+  desc,
+  imgUrl
+) => {
   axios.get('http://jfmall.app.fuyulove.com/connect/jssdk', {
       params: {
+        sid: 658,
         url: location.href.split('#')[0],
-        t: Math.random(),
+        t: Math.random()
       }
     })
     .then(res => {
-      console.log('授权', res)
+      console.log('签名', res)
       config(res.data.data.data)
     })
     .catch(function (error) {
@@ -38,27 +41,43 @@ export default function wxShare({
         'playVoice',
         'uploadVoice',
         'getLocalImgData',
+        'scanQRCode',
         'openLocation'
       ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
     })
     wx.ready(() => {
       wx.onMenuShareAppMessage({
-        title: document.title,
+        title: title,
         link: link,
         desc: desc,
-        imgUrl: 'http://b.fuyulove.com/wisdom/img/share.jpg',
+        imgUrl: imgUrl,
       })
     })
     wx.onMenuShareTimeline({
-      title: document.title,
+      title: title,
       link: link,
       desc: desc,
-      imgUrl: 'http://b.fuyulove.com/wisdom/img/share.jpg',
+      imgUrl: imgUrl,
     })
-    wx.error(function () {})
+    // wx.getLocation({
+    //   type: 'wgs84',
+    //   success: function (res) {
+    //     console.log("res", res)
+    //     var latitude = res.latitude;
+    //     var longitude = res.longitude;
+    //     console.log("longitude", longitude)
+    //     sessionStorage.setItem("longitude", longitude);
+    //     sessionStorage.setItem("latitude", latitude);
+
+    //   }
+    // });
+
+    wx.error(function () {
+
+    })
   }
 
 
 }
 // 为Vue的原型对象添加该方法，则所有vue实例都能继承该方法
-Vue.prototype.$wxShare = wxShare
+Vue.prototype.$shareConfig = shareConfig

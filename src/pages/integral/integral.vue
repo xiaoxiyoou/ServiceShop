@@ -9,7 +9,7 @@
     <div class="tip">共有1000积分将于2020-12-31过期</div>
     <div class="mid-wrap row a-c j-c">
       <div class="mid-cont row a-c">
-        <div class="mid-item col a-c j-c" style="border-right:2px solid #b6b6b6">
+        <div class="mid-item col a-c j-c" style="border-right:1px solid #b6b6b6">
           <div class="mid-text">获得积分</div>
           <div class="mid-num" style="color:#686194">+50</div>
         </div>
@@ -76,6 +76,8 @@
         </div>
       </div>
     </div>
+    <img class="tips" src="./tips.png" alt="" />
+    <div class="exchange row a-c j-c" @click="service">兑换好礼</div>
   </div>
 
 </template>
@@ -92,7 +94,11 @@ export default {
 
   },
   methods: {
-
+    service() {
+      this.$router.push({
+        path: '/service',
+      })
+    },
   },
   components: {
   }
@@ -129,6 +135,7 @@ export default {
     color #ffffff
     font-size 23px
     text-align center
+    margin-top 20px
   .mid-wrap
     text-align center
     .mid-cont
@@ -152,9 +159,30 @@ export default {
     .record-cont
       .date
         padding 42px 25px 17px
+        color #333333
+        font-size 28px
         background-color #f2f2f2
       .record-item
         padding 0 25px
         background-color #ffffff
         height 106px
+        .record-name
+          font-size 30px
+          color #000000
+        .record-num
+          font-size 24px
+          color #666666
+  .tips
+    margin 100px auto 30px
+    display block
+    width 50%
+  .exchange
+    text-align center
+    width 181px
+    color #ffffff
+    font-size 33px
+    margin 0 auto
+    height 58px
+    border-radius 23px
+    background #686194
 </style>
