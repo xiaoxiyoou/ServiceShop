@@ -1,20 +1,31 @@
 <template>
   <div class="container">
-    <img class="banner" src="./banner.png" alt="" />
-    <div class="title">网站建设 定制开发专业、时效</div>
-    <div class="des-wrap row a-c j-b">
-      <div class="value"><span>6万</span>积分</div>
+    <img class="banner" v-if="info.imgurl" :src="info.imgurl" alt="" />
+    <img class="banner" v-else src="./banner.png" alt="" />
+    <div class="title">{{info.title}}</div>
+    <div class="des-wrap row a-c j-b" ref="nav">
+      <div class="value"><span>{{info.integral}}</span>积分</div>
       <div class="tip">不支持退换</div>
     </div>
-    <div class="bar"></div>
-    <div class="nav-wrap row a-c">
+    <div class="bar" ></div>
+    <div class="nav-wrap row a-c"  :class="searchBarFixed == true ? 'isFixed' :''">
       <div class="nav-item row a-c j-c" :class="{'navtHover':isActive == index}" v-for="(item,index) in navList" :key="index" @click="activeNav(index)">{{item.name}}</div>
     </div>
-    <img class="banner" src="./banner.png" alt="" />
+    <div id="searchBar"></div>
+    <div class="content" v-html="info.contents"></div>
+    <div class="goodstitle" ref="goodstitle">相关推荐</div>
+    <div class="goods-wrap row j-b f-w" >
+      <div class="goods-item" v-for="(item,index) in dataList" :key="index" @click="serviceDetail(item.id,item.cat_id)">
+        <img class="goods-img" :src="item.imgurl" v-if="item.imgurl" alt="">
+        <img class="goods-img" src="./../../assets/img/noMsg.png" v-else alt="">
+        <div class="goods-title">{{item.title}}</div>
+        <div class="goods-value"><span>{{item.integral}}</span> 积分</div>
+      </div>
+    </div>
     <div class="btm-wrap row j-b a-c">
       <div class="left ">
         <span class="total">合计：</span>
-        <span class="value">6万</span>
+        <span class="value">{{info.integral}}</span>
         <span class="num">积分</span>
       </div>
       <div class="right row j-c a-c" @click="showPopup">立即兑换</div>
@@ -34,29 +45,88 @@
 
 </template>
 <script type="text/ecmascript-6">
+import { detail, list } from 'api/index'
 export default {
   data() {
     return {
+      searchBarFixed: false,
       show: false,
       isActive: 0,
       navList: [
         {
           name: '商品详情',
-        }, {
-          name: '商品介绍',
-        }, {
+        },
+
+        {
           name: '相关推荐',
         }
-      ]
+      ],
+      info: '',
+      dataList: [],
 
 
     }
   },
   mounted() {
     document.body.scrollTop = document.documentElement.scrollTop = 0
+    this._detail()
+    this._list()
+    this.$nextTick(() => {
+      window.addEventListener('scroll', this.handleScroll)
+    })
 
   },
+  beforeDestroy() {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
+  destroy() {
+    window.removeEventListener('scroll', this.handleScroll)
+  },
   methods: {
+    // 滑动定位
+    handleScroll() {
+      var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
+      var offsetTop = document.querySelector('#searchBar').offsetTop - 90
+      // console.log(scrollTop)
+      // console.log(offsetTop)
+      if (scrollTop > offsetTop) {
+        this.searchBarFixed = true
+      } else {
+        this.searchBarFixed = false
+      }
+
+    },
+    _detail() {
+      detail({
+        id: this.$route.query.id
+      }).then(res => {
+        console.log('详情', res)
+        this.info = res.data.info
+
+      })
+    },
+    _list() {
+      list({
+        page: 1,
+        size: 4,
+        catid: this.$route.query.catid,
+        goodsid: this.$route.query.id,
+        recom: 1
+      }).then(res => {
+        console.log('列表接口', res)
+        this.dataList = res.data.list
+      })
+
+    },
+    serviceDetail(flag, catid) {
+      this.$router.replace({
+        path: '/serviceDetail',
+        query: {
+          id: flag,
+          catid: catid
+        }
+      })
+    },
     // 购买
     showPopup() {
       this.show = true;
@@ -65,6 +135,18 @@ export default {
     activeNav(flag) {
       console.log(flag)
       this.isActive = flag
+      if (flag == 0) {
+        this.$refs.nav.scrollIntoView({
+          behavior: "smooth",
+          block: "start"  // 上边框与视窗顶部平齐。默认值
+        });
+      }
+      if (flag == 1) {
+        this.$refs.goodstitle.scrollIntoView({
+          behavior: "smooth",
+          block: "start"  // 上边框与视窗顶部平齐。默认值
+        });
+      }
     },
     //确认购买
     result() {
@@ -88,6 +170,7 @@ export default {
   bottom 0
   .banner
     width 100%
+    height 420px
   .title
     padding 15px 32px 5px
     color #111111
@@ -106,16 +189,28 @@ export default {
     height 20px
     width 100%
     background #f5f5f5
+  .isFixed
+    position fixed
+    background-color #Fff
+    top 0
+    z-index 999
   .nav-wrap
+    width 100%
     height 92px
+    border-bottom 1px solid #f5f5f5
     .nav-item
-      width 33%
+      width 50%
       font-size 28px
       color #414141
     .navtHover
       color #696198
       font-weight 700
       font-size 32px
+  .content
+    padding 10px 10px 30px
+    font-size 30px
+    >>>img
+      width 100%
   .btm-wrap
     position fixed
     z-index 10
@@ -165,4 +260,34 @@ export default {
         width 50%
         background #686194
         color #ffffff
+  .goodstitle
+    text-align center
+    height 50px
+  .goods-wrap
+    padding 30px 30px 0px
+    top 90px
+    margin-bottom 150px
+    .goods-item
+      width 336px
+      height 441px
+      background-color #ffffff
+      border-radius 10px
+      overflow hidden
+      box-shadow 1px 1px 10px #f2f2f2
+      margin-bottom 20px
+      .goods-img
+        width 100%
+        height 331px
+        display block
+      .goods-title
+        font-size 25px
+        margin-left 16px
+        margin-top 10px
+      .goods-value
+        color #b93662
+        font-size 24px
+        margin-left 16px
+        margin-top 10px
+        span
+          font-size 33px
 </style>

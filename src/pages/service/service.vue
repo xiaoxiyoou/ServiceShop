@@ -10,36 +10,10 @@
     </div> -->
     <!-- 导航栏 -->
     <div class="grid-wrap">
-      <!-- <div class="grid-title row a-c j-b">
-        <div class="grid-title-left row a-c">
-          <div class="vertical"></div>
-          <div class="grid-title-text">享服务</div>
-        </div>
-        <div class="grid-title-right row a-c" @click="service">
-          <div class="grid-more">查看更多</div>
-          <img class="more-img" src="./arrow_s.png" alt="" />
-        </div>
-      </div> -->
-      <div class="grid-list row a-c j-b" @click="serviceList">
-        <div class="grid-item col a-c j-c">
-          <img class="grid-item-img" src="./../../assets/img/nav_1.png" alt="" />
-          <div class="grid-item-text">VI设计</div>
-        </div>
-        <div class="grid-item col a-c j-c">
-          <img class="grid-item-img" src="./../../assets/img/nav_2.png" alt="" />
-          <div class="grid-item-text">软件开发</div>
-        </div>
-        <div class="grid-item col a-c j-c">
-          <img class="grid-item-img" src="./../../assets/img/nav_3.png" alt="" />
-          <div class="grid-item-text">视频包装</div>
-        </div>
-        <div class="grid-item col a-c j-c">
-          <img class="grid-item-img" src="./../../assets/img/nav_4.png" alt="" />
-          <div class="grid-item-text">导师咨询</div>
-        </div>
-        <div class="grid-item col a-c j-c">
-          <img class="grid-item-img" src="./../../assets/img/nav_5.png" alt="" />
-          <div class="grid-item-text">销售用品</div>
+      <div class="grid-list row a-c j-b">
+        <div class="grid-item col a-c j-c" v-for="(item,index) in cateList" :key="index" @click="serviceList(0,item.id)">
+          <img class="grid-item-img" :src="item.icon" alt="" />
+          <div class="grid-item-text">{{item.name}}</div>
         </div>
       </div>
     </div>
@@ -58,81 +32,27 @@
       </div>
     </div>
     <div class="bar"></div>
-    <div class="grid-wrap">
+    <div class="grid-wrap" ref="block1" v-for="(itemOut,index) in searList" :key="index">
       <div class="grid-title row a-c j-b">
         <div class="grid-title-left row a-c">
           <div class="vertical"></div>
-          <div class="grid-title-text">5千积分以下</div>
+          <div class="grid-title-text">{{itemOut.name}}</div>
+        </div>
+        <div class="grid-title-right row a-c" @click="serviceList(itemOut.id,0)">
+          <div class="grid-more">查看更多</div>
+          <img class="more-img" src="./arrow_s.png" alt="" />
         </div>
       </div>
-      <div class="goods-wrap row j-b f-w" @click="serviceDetail(1)">
-        <div class="goods-item">
-          <img class="goods-img" src="./img_url.png" alt="">
-          <div class="goods-title">网站建设定制开发</div>
-          <div class="goods-value"><span>2000</span> 积分</div>
-        </div>
-        <div class="goods-item">
-          <img class="goods-img" src="./img_url.png" alt="">
-          <div class="goods-title">网站建设定制开发</div>
-          <div class="goods-value"><span>2000</span> 积分</div>
-        </div>
-        <div class="goods-item">
-          <img class="goods-img" src="./img_url.png" alt="">
-          <div class="goods-title">网站建设定制开发</div>
-          <div class="goods-value"><span>2000</span> 积分</div>
+      <div class="goods-wrap row j-b f-w" v-if="dataList[itemOut.id]">
+        <div class="goods-item" v-for="(item,index) in dataList[itemOut.id]" :key="index" @click="serviceDetail(item.id,item.cat_id)">
+          <img class="goods-img" :src="item.imgurl" v-if="item.imgurl" alt="">
+          <img class="goods-img" src="./../../assets/img/noMsg.png" v-else alt="">
+          <div class="goods-title">{{item.title}}</div>
+          <div class="goods-value"><span>{{item.integral}}</span> 积分</div>
         </div>
       </div>
     </div>
-    <div class="grid-wrap">
-      <div class="grid-title row a-c j-b">
-        <div class="grid-title-left row a-c">
-          <div class="vertical"></div>
-          <div class="grid-title-text">5千-1万积分</div>
-        </div>
-      </div>
-      <div class="goods-wrap row j-b f-w" @click="serviceDetail(1)">
-        <div class="goods-item">
-          <img class="goods-img" src="./img_url.png" alt="">
-          <div class="goods-title">网站建设定制开发</div>
-          <div class="goods-value"><span>2000</span> 积分</div>
-        </div>
-        <div class="goods-item">
-          <img class="goods-img" src="./img_url.png" alt="">
-          <div class="goods-title">网站建设定制开发</div>
-          <div class="goods-value"><span>2000</span> 积分</div>
-        </div>
-        <div class="goods-item">
-          <img class="goods-img" src="./img_url.png" alt="">
-          <div class="goods-title">网站建设定制开发</div>
-          <div class="goods-value"><span>2000</span> 积分</div>
-        </div>
-      </div>
-    </div>
-    <div class="grid-wrap">
-      <div class="grid-title row a-c j-b">
-        <div class="grid-title-left row a-c">
-          <div class="vertical"></div>
-          <div class="grid-title-text">1万积分以上</div>
-        </div>
-      </div>
-      <div class="goods-wrap row j-b f-w" @click="serviceDetail(1)">
-        <div class="goods-item">
-          <img class="goods-img" src="./img_url.png" alt="">
-          <div class="goods-title">网站建设定制开发</div>
-          <div class="goods-value"><span>2000</span> 积分</div>
-        </div>
-        <div class="goods-item">
-          <img class="goods-img" src="./img_url.png" alt="">
-          <div class="goods-title">网站建设定制开发</div>
-          <div class="goods-value"><span>2000</span> 积分</div>
-        </div>
-        <div class="goods-item">
-          <img class="goods-img" src="./img_url.png" alt="">
-          <div class="goods-title">网站建设定制开发</div>
-          <div class="goods-value"><span>2000</span> 积分</div>
-        </div>
-      </div>
-    </div>
+
     <div class="bar"></div>
     <div class="bar"></div>
 
@@ -141,20 +61,63 @@
 </template>
 <script type="text/ecmascript-6">
 import { Toast } from 'vant';
-
+import { cate, sear, list } from 'api/index'
 export default {
   data() {
     return {
-
       value: '',
+      searList: [],
+      cateList: [],
+      dataList: [],
     }
   },
   mounted() {
     document.body.scrollTop = document.documentElement.scrollTop = 0
+    this._cate()
 
+    this.$nextTick(() => {
+
+      this._sear()
+
+    })
   },
   methods: {
-      serviceDetail(flag) {
+    _list(id) {
+      list({
+        page: 1,
+        size: 4,
+        sear: id
+      }).then(res => {
+        console.log('列表接口', res)
+        this.dataList[id] = res.data.list
+        console.log(this.dataList)
+        this.$forceUpdate() //强制刷新
+
+      })
+
+    },
+    _sear() {
+      sear({
+      }).then(res => {
+        console.log('获取商品积分区间', res)
+        this.searList = res.data.sear
+        let searId = this.searList.map(function (item) {
+          return item.id;
+        });
+        console.log(searId)
+        for (let id of searId) {
+          this._list(id)
+        }
+      })
+    },
+    _cate() {
+      cate({
+      }).then(res => {
+        console.log('分类接口', res)
+        this.cateList = res.data.cate
+      })
+    },
+    serviceDetail(flag) {
       this.$router.push({
         path: '/serviceDetail',
         query: {
@@ -168,11 +131,15 @@ export default {
     onCancel() {
       Toast('取消');
     },
-    serviceList() {
+    serviceList(searid, catid) {
       this.$router.push({
         path: '/serviceList',
+        query: {
+          searid: searid,
+          catid: catid,
+        }
       })
-    }
+    },
 
   },
   components: {
@@ -222,6 +189,7 @@ export default {
           font-size 22px
         .more-img
           width 10px
+          margin-left 8px
     .grid-list
       padding 0 35px
       height 177px
@@ -245,6 +213,8 @@ export default {
         margin-bottom 20px
         .goods-img
           width 100%
+          height 331px
+          display block
         .goods-title
           font-size 25px
           margin-left 16px

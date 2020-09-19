@@ -2,20 +2,36 @@
   <div class="container">
     <div class="grid-wrap">
       <div class="grid-title row a-c j-b">
-        <div class="grid-title-left row a-c j-c" style="border-right:1px solid #b8b8b8">
-          <div class="grid-title-text">全部</div>
+        <div class="grid-title-left row a-c j-c" style="border-right:1px solid #b8b8b8" @click="grid1">
+          <div class="grid-title-text">{{drop1Name}}</div>
         </div>
-        <van-dropdown-menu active-color="#686194">
-          <!-- <van-dropdown-item v-model="value1" :options="option1" /> -->
-          <van-dropdown-item v-model="value2" :options="option2" />
-        </van-dropdown-menu>
+        <div class="grid-title-left row a-c j-c" @click="grid2">
+          <div class="grid-title-text">{{drop2Name}}</div>
+        </div>
+
+      </div>
+      <!-- 下拉 -->
+      <div class="grid-drop" v-if="drop1">
+        <div class="drop-item row a-c j-b" v-for="(item,index) in cateList" :key="index" @click="drop(item.name,item.id,index,1)">
+          <div class="drop-name">{{item.name}}</div>
+          <div class="" :class="{'check':isActive1 == index}"></div>
+        </div>
+        <div class="mask"></div>
+      </div>
+      <!-- 下拉 -->
+      <div class="grid-drop" v-if="drop2">
+        <div class="drop-item row a-c j-b" v-for="(item,index) in searList" :key="index" @click="drop(item.name,item.id,index,2)">
+          <div class="drop-name">{{item.name}}</div>
+          <div class="" :class="{'check':isActive2 == index}"></div>
+        </div>
+        <div class="mask"></div>
       </div>
       <div class="bar"></div>
-      <van-list v-model="loading" :finished="finished" :finished-text="finishedtext" @load="onLoad" >
-        <div class="goods-wrap row j-b f-w" @click="serviceDetail(1)">
-          <div class="goods-item" v-for="(item,index) in dataList" :key="index">
+      <van-list v-model="loading" :finished="finished" :finished-text="finishedtext" @load="onLoad">
+        <div class="goods-wrap row j-b f-w">
+          <div class="goods-item" v-for="(item,index) in dataList" :key="index" @click="serviceDetail(item.id,item.cat_id)">
             <img class="goods-img" :src="item.imgurl" v-if="item.imgurl" alt="">
-            <img class="goods-img" src="./noMsg.png" v-else alt="">
+            <img class="goods-img" src="./../../assets/img/noMsg.png" v-else alt="">
             <div class="goods-title">{{item.title}}</div>
             <div class="goods-value"><span>{{item.integral}}</span> 积分</div>
           </div>
@@ -28,33 +44,78 @@
 </template>
 <script type="text/ecmascript-6">
 import noMessage from 'components/noMessage/noMessage'
-import { list } from 'api/index'
+import { list, cate, sear } from 'api/index'
 export default {
   data() {
     return {
+
+      drop1: false,
+      drop2: false,
       value1: 0,
       value2: 'a',
       option1: [
-        { text: '全部商品', value: 0 },
-        { text: '新款商品', value: 1 },
-        { text: '活动商品', value: 2 },
+        { text: '筛选品项', value: 0 },
+        { text: 'VI设计', value: 1 },
+        { text: '软件开发', value: 2 },
+        { text: '视频包装', value: 3 },
+        { text: '导师咨询', value: 4 },
+        { text: '销售用品', value: 5 },
       ],
       option2: [
-        { text: '默认排序', value: 'a' },
-        { text: '好评排序', value: 'b' },
-        { text: '销量排序', value: 'c' },
+        { text: '筛选积分', value: 'a' },
+        { text: '5千积分以下', value: 'b' },
+        { text: '5千-2万积分', value: 'c' },
+        { text: '2万积分以上', value: 'd' },
       ],
-      dataList: [],
+      searList: [
+        {
+          describe: "",
+          flag: "1",
+          icon: "http://jfmall.app.fuyulove.com/images/nav_1.png",
+          id: "0",
+          imglist: "",
+          imgurl: "",
+          keyword: "",
+          name: "筛选积分",
+          partid: "0",
+          remark: "",
+          sort: "1",
+          type: "0"
+        },
+      ],
+      cateList: [
+        {
+          describe: "",
+          flag: "1",
+          icon: "http://jfmall.app.fuyulove.com/images/nav_1.png",
+          id: "0",
+          imglist: "",
+          imgurl: "",
+          keyword: "",
+          name: "筛选品项",
+          partid: "0",
+          remark: "",
+          sort: "1",
+          type: "0"
+        },
+      ],
+      isActive1: 1,
+      isActive2: 1,
+      drop1Name: "筛选品项",
+      drop2Name: "筛选积分",
+      catid: this.$route.query.catid,
+      searid: this.$route.query.searid,
       noinfoShow: false,
       // 下拉加载
+      dataList: [],
       finishedtext: '',
       loading: false,
       finished: false,
       page: 1,
-      size: 5,
+      size: 10,
       count: '',
       listStatus: true,
-      onLoadtatus: false
+      onLoadtatus: false,
 
 
     }
@@ -62,9 +123,45 @@ export default {
   mounted() {
     document.body.scrollTop = document.documentElement.scrollTop = 0
     this._list()
+    this._cate()
+    this._sear()
 
   },
   methods: {
+    _sear() {
+      sear({
+      }).then(res => {
+        console.log('获取商品积分区间', res)
+        this.searList = this.searList.concat(res.data.sear)
+
+      })
+    },
+    grid1() {
+      this.drop1 = true
+      this.drop2 = false
+    },
+    grid2() {
+      this.drop2 = true
+      this.drop1 = false
+    },
+    // 点击下拉中的某一项
+    drop(dropName, id, index, flag) {
+      this.drop1 = false
+      this.drop2 = false
+      if (flag == 1) {
+        this.isActive1 = index
+        this.catid = id
+        this.drop1Name = dropName
+      }
+      if (flag == 2) {
+        this.isActive2 = index
+        this.searid = id
+        this.drop2Name = dropName
+      }
+      this.loadState()
+
+      this._list()
+    },
 
     onLoad() {
       if (this.onLoadtatus) {
@@ -79,12 +176,14 @@ export default {
 
       }
     },
-    // 清除下拉加载状态
-    loadState() {
-      this.list = []
-      this.page = 1
-      this.finished = false
-      this.loading = false
+    _cate() {
+      cate({
+      }).then(res => {
+        console.log('分类接口', res)
+        this.cateList = this.cateList.concat(res.data.cate)
+        console.log(this.cateList)
+
+      })
 
     },
     _list() {
@@ -94,7 +193,8 @@ export default {
         list({
           page: this.page,
           size: this.size,
-          catid: this.$route.query.id
+          catid: this.catid,
+          sear: this.searid
         }).then(res => {
           console.log('列表接口', res)
           this.dataList = this.dataList.concat(res.data.list)
@@ -113,11 +213,20 @@ export default {
       }
 
     },
-    serviceDetail(flag) {
+    // 清除下拉加载状态
+    loadState() {
+      this.dataList = []
+      this.page = 1
+      this.finished = false
+      this.loading = false
+
+    },
+    serviceDetail(flag, catid) {
       this.$router.push({
         path: '/serviceDetail',
         query: {
           id: flag,
+          catid: catid
         }
       })
     },
@@ -130,10 +239,7 @@ export default {
 </script>
 <style scoped lang="stylus">
 >>>.van-list__finished-text
- background-color #f5f5f5
->>>.van-dropdown-menu
-  width 50%
-  height 1.2rem
+  background-color #f2f2f2
 .container
   position absolute
   background-color #f2f2f2
@@ -179,6 +285,29 @@ export default {
           font-size 23px
           color #2d2d2d
           margin-top 17px
+    .grid-drop
+      position fixed
+      top 90px
+      background-color #ffffff
+      width 100%
+      .mask
+        position fixed
+        background-color rgba(0, 0, 0, 0.3)
+        width 100%
+        height 100%
+        z-index 100
+      .drop-item
+        height 77px
+        margin-left 28px
+        padding-right 28px
+        border-bottom 1px solid #f5f5f5
+        font-size 27px
+        color #7a7a7a
+        .check
+          background-image url('./check.png')
+          width 27px
+          height 18px
+          background-size 100% 100%
     .bar
       height 90px
       width 100%

@@ -42,7 +42,6 @@
           <img class="grid-item-img" :src="item.icon" alt="" />
           <div class="grid-item-text">{{item.name}}</div>
         </div>
-
       </div>
     </div>
     <div class="bar"></div>
@@ -53,24 +52,16 @@
           <div class="grid-title-text">猜你喜欢</div>
         </div>
       </div>
-      <div class="goods-wrap row j-b f-w" @click="serviceDetail(1)">
-        <div class="goods-item">
-          <img class="goods-img" src="./img_url.png" alt="">
-          <div class="goods-title">网站建设定制开发</div>
-          <div class="goods-value"><span>2000</span> 积分</div>
+      <van-list v-model="loading" :finished="finished" :finished-text="finishedtext" @load="onLoad">
+        <div class="goods-wrap row j-b f-w">
+          <div class="goods-item" v-for="(item,index) in dataList" :key="index" @click="serviceDetail(item.id,item.cat_id)">
+            <img class="goods-img" :src="item.imgurl" v-if="item.imgurl" alt="">
+            <img class="goods-img" src="./../../assets/img/noMsg.png" v-else alt="">
+            <div class="goods-title">{{item.title}}</div>
+            <div class="goods-value"><span>{{item.integral}}</span> 积分</div>
+          </div>
         </div>
-        <div class="goods-item">
-          <img class="goods-img" src="./img_url.png" alt="">
-          <div class="goods-title">网站建设定制开发</div>
-          <div class="goods-value"><span>2000</span> 积分</div>
-        </div>
-        <div class="goods-item">
-          <img class="goods-img" src="./img_url.png" alt="">
-          <div class="goods-title">网站建设定制开发</div>
-          <div class="goods-value"><span>2000</span> 积分</div>
-        </div>
-
-      </div>
+      </van-list>
     </div>
   </div>
 </template>
@@ -85,7 +76,17 @@ export default {
         require('./swiper.png'),
         require('./swiper.png')
       ],
-      cateList: []
+      cateList: [],
+          // 下拉加载
+      dataList: [],
+      finishedtext: '',
+      loading: false,
+      finished: false,
+      page: 1,
+      size: 5,
+      count: '',
+      listStatus: true,
+      onLoadtatus: false
 
 
     }
@@ -97,7 +98,7 @@ export default {
   },
   mounted() {
     this._cate()
-    this._list(1, 10)
+    this._list()
 
 
 
@@ -107,6 +108,46 @@ export default {
   destroy() {
   },
   methods: {
+    onLoad() {
+      if (this.onLoadtatus) {
+        setTimeout(() => {
+          // 加载状态结束
+          this._list()
+          this.loading = false;
+          if (this.dataList.length >= this.count) {
+            this.finished = true;
+          }
+        }, 1000);
+
+      }
+    },
+
+    _list() {
+      this.onLoadtatus = true
+      if (this.listStatus) {
+        this.listStatus = false
+        list({
+          page: this.page,
+          size: this.size,
+          catid: this.$route.query.id
+        }).then(res => {
+          console.log('列表接口', res)
+          this.dataList = this.dataList.concat(res.data.list)
+          this.count = res.data.count
+          this.page = res.data.page
+          this.listStatus = true
+          if (this.count == 0) {
+            this.noinfoShow = true
+            this.finishedtext = ''
+          } else {
+            this.noinfoShow = false
+            this.finishedtext = '没有更多数据了'
+          }
+
+        })
+      }
+
+    },
     _cate() {
       cate({
       }).then(res => {
@@ -116,22 +157,12 @@ export default {
       })
 
     },
-    _list(page, size) {
-      list({
-        page,
-        size,
-        recom: 1
-      }).then(res => {
-        console.log('列表接口', res)
-
-      })
-
-    },
-    serviceList(id) {
+   
+    serviceList(catid) {
       this.$router.push({
         path: '/serviceList',
         query: {
-          id: id,
+          catid: catid,
         }
       })
     },
@@ -175,6 +206,8 @@ export default {
 }
 </script>
 <style scoped lang="stylus">
+>>>.van-list__finished-text
+ background-color #f2f2f2
 .container
   top 0px
   width 100%
@@ -280,6 +313,7 @@ export default {
           font-size 22px
         .more-img
           width 10px
+          margin-left 8px
     .grid-list
       padding 0 35px
       height 177px
@@ -303,6 +337,8 @@ export default {
         margin-bottom 20px
         .goods-img
           width 100%
+          height 331px
+          display block
         .goods-title
           font-size 25px
           margin-left 16px
