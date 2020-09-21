@@ -1,8 +1,8 @@
 <template>
   <div class="container col a-c">
     <div class="head-wrap row a-c ">
-      <img class="headImg" src="./headImg.png" alt="">
-      <div class="headName">林小小</div>
+      <img class="headImg" :src="info.headimgurl" alt="">
+      <div class="headName">{{info.nickname}}</div>
       <div class="headbtn row a-c j-c" @click="signIn">个人中心</div>
     </div>
     <div class="swiper-wrapper col a-c">
@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="grid-list row a-c j-b">
-        <div class="grid-item col a-c j-c" v-for="(item,index) in cateList" :key="index" @click="serviceList(item.id)">
+        <div class="grid-item col a-c j-c" v-for="(item,index) in cateList" :key="index" @click="serviceList(0,item.id,item.name)">
           <img class="grid-item-img" :src="item.icon" alt="" />
           <div class="grid-item-text">{{item.name}}</div>
         </div>
@@ -66,18 +66,19 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import { cate, list } from 'api/index'
+import { cate, list, userInfo } from 'api/index'
 // import { Toast } from 'vant';
 export default {
   data() {
     return {
+      info: '',
       show: true,
       images: [
         require('./swiper.png'),
         require('./swiper.png')
       ],
       cateList: [],
-          // 下拉加载
+      // 下拉加载
       dataList: [],
       finishedtext: '',
       loading: false,
@@ -99,6 +100,7 @@ export default {
   mounted() {
     this._cate()
     this._list()
+    this._userInfo()
 
 
 
@@ -108,6 +110,14 @@ export default {
   destroy() {
   },
   methods: {
+    _userInfo() {
+      userInfo({
+      }).then(res => {
+        console.log('个人信息', res)
+        this.info = res.data.info
+
+      })
+    },
     onLoad() {
       if (this.onLoadtatus) {
         setTimeout(() => {
@@ -157,19 +167,38 @@ export default {
       })
 
     },
-   
-    serviceList(catid) {
+
+    serviceList(searid, catid, dropName) {
+      if (searid) {
+        localStorage.setItem('drop2Name', dropName)
+        localStorage.setItem('drop1Name', "")
+      }
+      if (catid) {
+        localStorage.setItem('drop1Name', dropName)
+        localStorage.setItem('drop2Name', "")
+      }
       this.$router.push({
         path: '/serviceList',
         query: {
+          searid: searid,
           catid: catid,
         }
       })
+
     },
     signIn() {
-      this.$router.push({
-        path: '/signIn',
-      })
+      if (this.info.status == 1) {
+        this.$router.push({
+          path: '/personCenter',
+        })
+      } else {
+        this.$router.push({
+          path: '/signIn',
+          query: {
+            sign: 2,
+          }
+        })
+      }
     },
     serviceDetail(flag) {
       this.$router.push({
@@ -207,7 +236,7 @@ export default {
 </script>
 <style scoped lang="stylus">
 >>>.van-list__finished-text
- background-color #f2f2f2
+  background-color #f2f2f2
 .container
   top 0px
   width 100%

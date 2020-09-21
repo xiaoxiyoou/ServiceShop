@@ -1,43 +1,35 @@
 <template>
   <div class="container col a-c">
-    <!-- <img class="bg" src="./bg.png" alt=""> -->
-    <!-- <div class="head-wrap col a-c j-c">
-      <div class="headText">林小小</div>
-    </div> -->
     <div class="title row a-c">个人信息</div>
     <div class="input-wrap row a-c j-b" style="height:77px">
       <div class="input-name">用户头像</div>
-      <img class="headImg" src="./headImg.png" alt="">
-      <!-- <div class="input-item row a-c">
-        <input type="number" placeholder="点击修改" />
-        <img class="arrow" src="./arrow_1.png" alt="" />
-      </div> -->
+      <img class="headImg" :src="info.headimgurl" @click=" cropShow(true)" alt="" />
     </div>
     <div class="input-wrap row a-c j-b">
       <div class="input-name">昵称</div>
       <div class="input-item row a-c">
-        <input type="number" placeholder="点击修改" />
+        <input type="text" placeholder="点击添加" v-model="info.nickname" />
         <img class="arrow" src="./arrow_1.png" alt="" />
       </div>
     </div>
-   <div class="input-wrap row a-c j-b">
+    <div class="input-wrap row a-c j-b">
       <div class="input-name">真实姓名</div>
       <div class="input-item row a-c">
-        <input type="number" placeholder="点击修改" />
+        <input type="text" placeholder="点击添加" v-model="info.realname" />
         <img class="arrow" src="./arrow_1.png" alt="" />
       </div>
     </div>
     <div class="input-wrap row a-c j-b">
       <div class="input-name">绑定手机</div>
-      <div class="input-item row a-c">
-        <input type="number" placeholder="点击修改" />
+      <div class="input-item row a-c" @click="signIn">
+        <input type="number" placeholder="点击添加" v-model="info.mobile" readonly="readonly" />
         <img class="arrow" src="./arrow_1.png" alt="" />
       </div>
     </div>
     <div class="input-wrap row a-c j-b">
       <div class="input-name">单位名称</div>
       <div class="input-item row a-c">
-        <input type="number" placeholder="点击修改" />
+        <input type="text" placeholder="点击添加" v-model="info.companyname" />
         <img class="arrow" src="./arrow_1.png" alt="" />
       </div>
     </div>
@@ -64,22 +56,79 @@
         <img class="arrow" src="./arrow_2.png" alt="" />
       </div>
     </div>
+    <div class="save col a-c j-c" @click="confirm(true)">保存</div>
+    <upImg :showCrop="showCrop" @cropShow="cropShow" @photoUp="photoUp" />
   </div>
 
 </template>
 <script type="text/ecmascript-6">
+import { userInfo, saveself } from 'api/index'
+import { Toast } from 'vant';
+import upImg from 'components/upImg/upImg'
 export default {
   data() {
     return {
-
+      info: '',
+      showCrop: false,
 
     }
   },
   mounted() {
     document.body.scrollTop = document.documentElement.scrollTop = 0
-
+    this._userInfo()
   },
   methods: {
+    signIn() {
+      this.$router.push({
+        path: '/signIn',
+        query: {
+          sign: 2,
+        }
+      })
+    },
+    _saveself() {
+      if (this.info.headimgurl == '') {
+        Toast('请上传您的头像')
+        return false
+      } else if (this.info.nickname == '') {
+        Toast('请输入您的昵称')
+        return false
+      } else if (this.info.realname == '') {
+        Toast('请输入您的姓名')
+        return false
+      } else if (this.info.mobile == '') {
+        Toast('请输入您的手机号')
+        return false
+      } else if (this.companyname == '') {
+        Toast('请输入您的公司名称')
+        return false
+      } else {
+        saveself({
+          headimgurl: this.info.headimgurl,
+          nickname: this.info.nickname,
+          realname: this.info.realname,
+          mobile: this.info.mobile,
+          city: this.info.city,
+          companyname: this.info.companyname,
+        }).then(res => {
+          console.log('修改', res)
+          if (res.code == 0) {
+            Toast('编辑成功')
+          } else {
+            Toast(res.msg)
+          }
+        })
+      }
+
+    },
+    _userInfo() {
+      userInfo({
+      }).then(res => {
+        console.log('个人信息', res)
+        this.info = res.data.info
+
+      })
+    },
     orderList() {
       this.$router.push({
         path: '/orderList',
@@ -95,9 +144,22 @@ export default {
         path: '/getCard',
       })
     },
+    cropShow(flag) {
+      this.showCrop = flag
+    },
+    confirm(flag) {
+      this.popShow = flag
+      this._saveself()
+    },
+    // 选图
+    photoUp(flag) {
+      Toast.clear();
+      this.info.headimgurl = flag
+    },
 
   },
   components: {
+    upImg
   }
 }
 </script>
@@ -152,6 +214,7 @@ export default {
       input
         text-align right
         font-size 30px
+        background-color #ffffff
       .arrow
         margin-left 16px
         width 14px
@@ -160,4 +223,12 @@ export default {
         font-size 30px
   .mar
     margin-top 65px
+  .save
+    width 680px
+    height 90px
+    background #686194
+    border-radius 10px
+    color #ffffff
+    margin-top 20px
+    margin-bottom 20px
 </style>

@@ -9,7 +9,6 @@ export const shareConfig = (
 ) => {
   axios.get('http://jfmall.app.fuyulove.com/connect/jssdk', {
       params: {
-        sid: 658,
         url: location.href.split('#')[0],
         t: Math.random()
       }

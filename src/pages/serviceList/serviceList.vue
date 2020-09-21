@@ -99,10 +99,10 @@ export default {
           type: "0"
         },
       ],
-      isActive1: 1,
-      isActive2: 1,
-      drop1Name: "筛选品项",
-      drop2Name: "筛选积分",
+      isActive1: 0,
+      isActive2: 0,
+      drop1Name: localStorage.getItem("drop1Name") || "筛选品项",
+      drop2Name: localStorage.getItem("drop2Name") || "筛选积分",
       catid: this.$route.query.catid,
       searid: this.$route.query.searid,
       noinfoShow: false,
@@ -133,13 +133,38 @@ export default {
       }).then(res => {
         console.log('获取商品积分区间', res)
         this.searList = this.searList.concat(res.data.sear)
+        let searId = this.searList.map(function (item) {
+          return item.id;
+        });
+        let searIndex = searId.indexOf(this.$route.query.searid)
+        if (searIndex > 0) {
+          this.isActive2 = searIndex
+        }
 
       })
     },
+    _cate() {
+      cate({
+      }).then(res => {
+        console.log('分类接口', res)
+        this.cateList = this.cateList.concat(res.data.cate)
+        let cateId = this.cateList.map(function (item) {
+          return item.id;
+        });
+        let cateIndex = cateId.indexOf(this.$route.query.catid)
+        if (cateIndex > 0) {
+          this.isActive1 = cateIndex
+        }
+
+      })
+
+    },
+    // 点击左侧筛选
     grid1() {
       this.drop1 = true
       this.drop2 = false
     },
+    // 点击右侧筛选
     grid2() {
       this.drop2 = true
       this.drop1 = false
@@ -176,16 +201,7 @@ export default {
 
       }
     },
-    _cate() {
-      cate({
-      }).then(res => {
-        console.log('分类接口', res)
-        this.cateList = this.cateList.concat(res.data.cate)
-        console.log(this.cateList)
 
-      })
-
-    },
     _list() {
       this.onLoadtatus = true
       if (this.listStatus) {

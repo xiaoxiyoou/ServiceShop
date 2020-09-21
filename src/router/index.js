@@ -56,7 +56,7 @@ const routes = [{
     name: 'serviceList',
     component: resolve => require(['pages/serviceList/serviceList'], resolve),
     meta: {
-      title: '更多享服务',
+      title: '商品列表',
     }
   },
   {

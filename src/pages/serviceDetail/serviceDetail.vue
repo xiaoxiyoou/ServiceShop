@@ -1,20 +1,20 @@
 <template>
   <div class="container">
-    <img class="banner" v-if="info.imgurl" :src="info.imgurl" alt="" />
+    <img class="banner" v-if="goodInfo.imgurl" :src="goodInfo.imgurl" alt="" />
     <img class="banner" v-else src="./banner.png" alt="" />
-    <div class="title">{{info.title}}</div>
+    <div class="title">{{goodInfo.title}}</div>
     <div class="des-wrap row a-c j-b" ref="nav">
-      <div class="value"><span>{{info.integral}}</span>积分</div>
+      <div class="value"><span>{{goodInfo.integral}}</span>积分</div>
       <div class="tip">不支持退换</div>
     </div>
-    <div class="bar" ></div>
-    <div class="nav-wrap row a-c"  :class="searchBarFixed == true ? 'isFixed' :''">
+    <div class="bar"></div>
+    <div class="nav-wrap row a-c" :class="searchBarFixed == true ? 'isFixed' :''">
       <div class="nav-item row a-c j-c" :class="{'navtHover':isActive == index}" v-for="(item,index) in navList" :key="index" @click="activeNav(index)">{{item.name}}</div>
     </div>
     <div id="searchBar"></div>
-    <div class="content" v-html="info.contents"></div>
+    <div class="content" v-html="goodInfo.contents"></div>
     <div class="goodstitle" ref="goodstitle">相关推荐</div>
-    <div class="goods-wrap row j-b f-w" >
+    <div class="goods-wrap row j-b f-w">
       <div class="goods-item" v-for="(item,index) in dataList" :key="index" @click="serviceDetail(item.id,item.cat_id)">
         <img class="goods-img" :src="item.imgurl" v-if="item.imgurl" alt="">
         <img class="goods-img" src="./../../assets/img/noMsg.png" v-else alt="">
@@ -25,7 +25,7 @@
     <div class="btm-wrap row j-b a-c">
       <div class="left ">
         <span class="total">合计：</span>
-        <span class="value">{{info.integral}}</span>
+        <span class="value">{{goodInfo.integral}}</span>
         <span class="num">积分</span>
       </div>
       <div class="right row j-c a-c" @click="showPopup">立即兑换</div>
@@ -33,11 +33,11 @@
     <!-- 购买弹出框 -->
     <van-popup v-model="show" class="pop-wrap col a-c j-c">
       <img class="pop-img" src="./pop.png" alt="" />
-      <div class="pop-des row a-c">本次兑换消耗<div>12231积分</div>
+      <div class="pop-des row a-c">本次兑换消耗<div>{{goodInfo.integral}}积分</div>
       </div>
       <div class="pop-btm-wrap row">
-        <div class="cancel row a-c j-c">取消</div>
-        <div class="confirm row a-c j-c" @click="result">确定</div>
+        <div class="cancel row a-c j-c" @click="cancel">取消</div>
+        <div class="confirm row a-c j-c" @click="_buy">确定</div>
       </div>
 
     </van-popup>
@@ -45,7 +45,8 @@
 
 </template>
 <script type="text/ecmascript-6">
-import { detail, list } from 'api/index'
+import { detail, list, userInfo, buy } from 'api/index'
+import { Toast } from 'vant';
 export default {
   data() {
     return {
@@ -62,6 +63,7 @@ export default {
         }
       ],
       info: '',
+      goodInfo: '',
       dataList: [],
 
 
@@ -71,6 +73,7 @@ export default {
     document.body.scrollTop = document.documentElement.scrollTop = 0
     this._detail()
     this._list()
+    this._userInfo()
     this.$nextTick(() => {
       window.addEventListener('scroll', this.handleScroll)
     })
@@ -83,6 +86,33 @@ export default {
     window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
+    _buy() {
+      buy({
+        id: this.$route.query.id
+      }).then(res => {
+        console.log('购买', res)
+        if (res.code == 0) {
+          this.$router.push({
+            path: '/result',
+          })
+        } else {
+           this.$router.push({
+            path: '/result',
+          })
+          Toast(res.msg)
+        }
+
+      })
+    },
+
+    _userInfo() {
+      userInfo({
+      }).then(res => {
+        console.log('个人信息', res)
+        this.info = res.data.info
+
+      })
+    },
     // 滑动定位
     handleScroll() {
       var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
@@ -101,7 +131,7 @@ export default {
         id: this.$route.query.id
       }).then(res => {
         console.log('详情', res)
-        this.info = res.data.info
+        this.goodInfo = res.data.info
 
       })
     },
@@ -129,7 +159,20 @@ export default {
     },
     // 购买
     showPopup() {
-      this.show = true;
+      if (this.info.status == 1) {
+        this.show = true;
+      } else {
+        this.$router.push({
+          path: '/signIn',
+          query: {
+            sign: 1,
+          }
+        })
+      }
+    },
+    // 点击取消
+    cancel() {
+      this.show = false;
     },
     // 切换导航栏
     activeNav(flag) {
@@ -148,13 +191,7 @@ export default {
         });
       }
     },
-    //确认购买
-    result() {
-      this.$router.push({
-        path: '/result',
 
-      })
-    }
 
   },
   components: {

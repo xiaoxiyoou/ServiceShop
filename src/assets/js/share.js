@@ -12,7 +12,7 @@ export default function wxShare({
       }
     })
     .then(res => {
-      console.log('授权', res)
+      console.log('签名', res)
       config(res.data.data.data)
     })
     .catch(function (error) {

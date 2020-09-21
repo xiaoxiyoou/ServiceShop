@@ -11,7 +11,7 @@
     <!-- 导航栏 -->
     <div class="grid-wrap">
       <div class="grid-list row a-c j-b">
-        <div class="grid-item col a-c j-c" v-for="(item,index) in cateList" :key="index" @click="serviceList(0,item.id)">
+        <div class="grid-item col a-c j-c" v-for="(item,index) in cateList" :key="index" @click="serviceList(0,item.id,item.name)">
           <img class="grid-item-img" :src="item.icon" alt="" />
           <div class="grid-item-text">{{item.name}}</div>
         </div>
@@ -26,9 +26,9 @@
         </div>
       </div>
       <div class="block-wrap row j-b">
-        <img class="block" src="./block_1.png" alt="" />
-        <img class="block" src="./block_2.png" alt="" />
-        <img class="block" src="./block_3.png" alt="" />
+        <img class="block" src="./block_1.png" alt="" @click="serviceList(1,0,'5千积分以下')" />
+        <img class="block" src="./block_2.png" alt="" @click="serviceList(1,0,'5千-2万积分')" />
+        <img class="block" src="./block_3.png" alt="" @click="serviceList(1,0,'2万积分以上')"/>
       </div>
     </div>
     <div class="bar"></div>
@@ -38,7 +38,7 @@
           <div class="vertical"></div>
           <div class="grid-title-text">{{itemOut.name}}</div>
         </div>
-        <div class="grid-title-right row a-c" @click="serviceList(itemOut.id,0)">
+        <div class="grid-title-right row a-c" @click="serviceList(itemOut.id,0,itemOut.name)">
           <div class="grid-more">查看更多</div>
           <img class="more-img" src="./arrow_s.png" alt="" />
         </div>
@@ -131,7 +131,15 @@ export default {
     onCancel() {
       Toast('取消');
     },
-    serviceList(searid, catid) {
+    serviceList(searid, catid, dropName) {
+      if (searid) {
+        localStorage.setItem('drop2Name', dropName)
+        localStorage.setItem('drop1Name', "")
+      }
+      if (catid) {
+        localStorage.setItem('drop1Name', dropName)
+        localStorage.setItem('drop2Name', "")
+      }
       this.$router.push({
         path: '/serviceList',
         query: {
