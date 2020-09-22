@@ -7,8 +7,8 @@
     </div>
     <div class="swiper-wrapper col a-c">
       <van-swipe :autoplay="3000" indicator-color="#686194">
-        <van-swipe-item v-for="(image, index) in images" :key="index">
-          <img :src="image" />
+        <van-swipe-item v-for="(item, index) in bannerList" :key="index">
+          <img :src="item.imgurl" />
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -16,7 +16,7 @@
       <div class="mid-item" @click="integral">
         <img class="mid-img" src="./block_1.png" alt="" />
         <div class="mid-title">当前积分</div>
-        <div class="mid-des row a-c">365200 <img class="" src="./arrow.png" alt="" /></div>
+        <div class="mid-des row a-c">{{info.integral}} <img class="" src="./arrow.png" alt="" /></div>
       </div>
       <div class="mid-item" @click="getCard">
         <img class="mid-img" src="./block_2.png" alt="" />
@@ -58,7 +58,10 @@
             <img class="goods-img" :src="item.imgurl" v-if="item.imgurl" alt="">
             <img class="goods-img" src="./../../assets/img/noMsg.png" v-else alt="">
             <div class="goods-title">{{item.title}}</div>
-            <div class="goods-value"><span>{{item.integral}}</span> 积分</div>
+            <div class="row a-c">
+              <div class="goods-value"><span>{{item.integral}}</span> 积分</div>
+              <div class="goods-num">{{item.price}}元</div>
+            </div>
           </div>
         </div>
       </van-list>
@@ -68,6 +71,7 @@
 <script type="text/ecmascript-6">
 import { cate, list, userInfo } from 'api/index'
 // import { Toast } from 'vant';
+import { getAdver } from 'api/index'
 export default {
   data() {
     return {
@@ -77,6 +81,7 @@ export default {
         require('./swiper.png'),
         require('./swiper.png')
       ],
+      bannerList: [],
       cateList: [],
       // 下拉加载
       dataList: [],
@@ -101,6 +106,7 @@ export default {
     this._cate()
     this._list()
     this._userInfo()
+    this._getAdver()
 
 
 
@@ -110,6 +116,15 @@ export default {
   destroy() {
   },
   methods: {
+    _getAdver() {
+      getAdver({
+        type: 0
+      }).then(res => {
+        console.log('广告', res)
+        this.bannerList = res.data.list
+
+      })
+    },
     _userInfo() {
       userInfo({
       }).then(res => {
@@ -200,11 +215,12 @@ export default {
         })
       }
     },
-    serviceDetail(flag) {
+    serviceDetail(flag, catid) {
       this.$router.push({
         path: '/serviceDetail',
         query: {
           id: flag,
+          catid: catid
         }
       })
     },
@@ -372,6 +388,11 @@ export default {
           font-size 25px
           margin-left 16px
           margin-top 10px
+          overflow hidden
+          display -webkit-box
+          -webkit-box-orient vertical
+          -webkit-line-clamp 1
+          text-overflow ellipsis
         .goods-value
           color #b93662
           font-size 24px
@@ -379,4 +400,10 @@ export default {
           margin-top 10px
           span
             font-size 33px
+        .goods-num
+          text-decoration line-through
+          color #c6c6c6
+          margin-left 10px
+          font-size 24px
+          margin-top 10px
 </style>

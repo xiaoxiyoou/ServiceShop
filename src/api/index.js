@@ -22,3 +22,9 @@ export const sendPhoneBound = (params) => ajax(BASE_URL + 'api/user/bindmobile',
 export const saveself = (params) => ajax(BASE_URL + 'api/user/saveself',params,'POST')
  // 兑换接口：
 export const buy = (params) => ajax(BASE_URL + 'api/goods/buy',params) 
+// 广告bannner
+export const getAdver = (params) => ajax(BASE_URL + 'api/adver/getlist',params) 
+// 获取完成订单详情
+export const orderShow = (params) => ajax(BASE_URL + 'api/order/show',params) 
+// 获取订单列表：
+export const orderList = (params) => ajax(BASE_URL + 'api/order/getlist',params) 

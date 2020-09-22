@@ -16,7 +16,7 @@
           <div class="drop-name">{{item.name}}</div>
           <div class="" :class="{'check':isActive1 == index}"></div>
         </div>
-        <div class="mask"></div>
+        <div class="drop-mask"></div>
       </div>
       <!-- 下拉 -->
       <div class="grid-drop" v-if="drop2">
@@ -24,7 +24,7 @@
           <div class="drop-name">{{item.name}}</div>
           <div class="" :class="{'check':isActive2 == index}"></div>
         </div>
-        <div class="mask"></div>
+        <div class="drop-mask"></div>
       </div>
       <div class="bar"></div>
       <van-list v-model="loading" :finished="finished" :finished-text="finishedtext" @load="onLoad">
@@ -33,7 +33,10 @@
             <img class="goods-img" :src="item.imgurl" v-if="item.imgurl" alt="">
             <img class="goods-img" src="./../../assets/img/noMsg.png" v-else alt="">
             <div class="goods-title">{{item.title}}</div>
-            <div class="goods-value"><span>{{item.integral}}</span> 积分</div>
+            <div class="row a-c">
+              <div class="goods-value"><span>{{item.integral}}</span> 积分</div>
+              <div class="goods-num">{{item.price}}元</div>
+            </div>
           </div>
         </div>
         <noMessage :noinfoShow="noinfoShow" />
@@ -306,7 +309,7 @@ export default {
       top 90px
       background-color #ffffff
       width 100%
-      .mask
+      .drop-mask
         position fixed
         background-color rgba(0, 0, 0, 0.3)
         width 100%
@@ -347,6 +350,11 @@ export default {
           font-size 25px
           margin-left 16px
           margin-top 10px
+          overflow hidden
+          display -webkit-box
+          -webkit-box-orient vertical
+          -webkit-line-clamp 1
+          text-overflow ellipsis
         .goods-value
           color #b93662
           font-size 24px
@@ -354,4 +362,10 @@ export default {
           margin-top 10px
           span
             font-size 33px
+        .goods-num
+          text-decoration line-through
+          color #c6c6c6
+          margin-left 10px
+          font-size 24px
+          margin-top 5px
 </style>

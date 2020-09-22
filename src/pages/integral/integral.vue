@@ -11,11 +11,11 @@
       <div class="mid-cont row a-c">
         <div class="mid-item col a-c j-c" style="border-right:1px solid #b6b6b6">
           <div class="mid-text">获得积分</div>
-          <div class="mid-num" style="color:#686194">+50</div>
+          <div class="mid-num" style="color:#b6b6b6">+50</div>
         </div>
         <div class="mid-item col a-c j-c">
-          <div class="mid-text">获得积分</div>
-          <div class="mid-num" style="color:#b6b6b6">+50</div>
+          <div class="mid-text">支出积分</div>
+          <div class="mid-num" style="color:#686194">+50</div>
         </div>
       </div>
     </div>

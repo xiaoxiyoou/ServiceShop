@@ -6,8 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
     <meta name="format-detection" content="telephone=no">
-    <meta http-equiv="x-rim-auto-match" content="none"> 
-    <meta name="referrer" content="no-referrer">
+    <meta http-equiv="x-rim-auto-match" content="none">
+    <meta name="referrer" content="no-referrer"> 
+    <link rel="stylesheet" href="./load.css" />
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>服务商城</title>
   </head>
@@ -15,7 +16,11 @@
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-    <div id="app"></div>
+    <div id="app">
+      <div class="loadcon">
+        <div class="test"> </div>
+      </div>  
+    </div>
     <!-- built files will be auto injected -->
   </body>
 </html>

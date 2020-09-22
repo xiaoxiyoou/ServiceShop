@@ -2,12 +2,12 @@
   <div class="container col a-c">
     <img class="sign" :src="sign" alt="" />
     <div class="status">兑换成功</div>
-    <div class="tip">消耗<span>12312</span>积分</div>
+    <div class="tip">消耗<span>{{integral}}</span>积分</div>
     <div class="btm row a-c j-c" @click="order">查看订单</div>
     <div class="ad-wrap">
       <img class="ad" src="./integral.png" alt="" />
       <div class="des1">进货储值赚积分</div>
-      <div class="des2">去赚积分></div>
+      <div class="des2" @click="getCard">去赚积分></div>
     </div>
     <div class="ad-wrap">
       <img class="ad" src="./web.png" alt="" />
@@ -17,23 +17,43 @@
 
 </template>
 <script type="text/ecmascript-6">
+import { getAdver } from 'api/index'
 export default {
   data() {
     return {
-      sign: require('./success.png')
+      sign: require('./success.png'),
+      integral: this.$route.query.integral
 
 
     }
   },
   mounted() {
     document.body.scrollTop = document.documentElement.scrollTop = 0
+    this._getAdver()
 
   },
   methods: {
+    _getAdver() {
+      getAdver({
+        type: 1
+      }).then(res => {
+        console.log('广告', res)
+
+      })
+    },
     //确认购买
     order() {
       this.$router.push({
         path: '/order',
+        query: {
+          orderid:  this.$route.query.orderid,
+        }
+      })
+    },
+    //确认购买
+    getCard() {
+      this.$router.push({
+        path: '/getCard',
 
       })
     }

@@ -1,10 +1,16 @@
 <template>
   <div class="container">
     <img class="banner" v-if="goodInfo.imgurl" :src="goodInfo.imgurl" alt="" />
+    <!-- <van-swipe v-if="goodInfo.imgurl" class="banner" :autoplay="3000" indicator-color="#b93662">
+      <van-swipe-item v-for="(image, index) in goodInfo.imgurl" :key="index">
+        <img :src="image" v-if="image" />
+      </van-swipe-item>
+    </van-swipe> -->
     <img class="banner" v-else src="./banner.png" alt="" />
     <div class="title">{{goodInfo.title}}</div>
-    <div class="des-wrap row a-c j-b" ref="nav">
+    <div class="des-wrap row a-c " ref="nav">
       <div class="value"><span>{{goodInfo.integral}}</span>积分</div>
+      <div class="num">{{goodInfo.price}}元</div>
       <div class="tip">不支持退换</div>
     </div>
     <div class="bar"></div>
@@ -94,11 +100,12 @@ export default {
         if (res.code == 0) {
           this.$router.push({
             path: '/result',
+            query: {
+              orderid: res.data.orderid,
+              integral: res.data.integral,
+            }
           })
         } else {
-           this.$router.push({
-            path: '/result',
-          })
           Toast(res.msg)
         }
 
@@ -219,8 +226,16 @@ export default {
       font-size 30px
       span
         font-size 53px
+    .num
+      text-decoration line-through
+      color #c6c6c6
+      margin-left 10px
+      margin-top 20px
+      font-size 24px
     .tip
       color #bdbdbd
+      position absolute
+      right 30px
       font-size 25px
   .bar
     height 20px
