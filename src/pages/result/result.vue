@@ -41,12 +41,12 @@ export default {
 
       })
     },
-    //确认购买
+    //查看订单
     order() {
       this.$router.push({
         path: '/order',
         query: {
-          orderid:  this.$route.query.orderid,
+          orderid: this.$route.query.orderid,
         }
       })
     },

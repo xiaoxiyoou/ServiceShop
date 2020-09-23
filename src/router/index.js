@@ -60,6 +60,14 @@ const routes = [{
     }
   },
   {
+    path: '/searchList',
+    name: 'searchList',
+    component: resolve => require(['pages/searchList/searchList'], resolve),
+    meta: {
+      title: '商品列表',
+    }
+  },
+  {
     path: '/serviceDetail',
     name: 'serviceDetail',
     component: resolve => require(['pages/serviceDetail/serviceDetail'], resolve),

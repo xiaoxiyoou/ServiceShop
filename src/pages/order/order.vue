@@ -4,8 +4,8 @@
       <img class="correct" src="./correct.png" alt="" />
       <div class="text">兑换成功</div>
     </div>
-    <div class="good-wrap row a-c" @click="serviceDetail(orderInfo.id,orderInfo.cat_id)">
-      <img class="banner" src="./banner.png" alt="" />
+    <div class="good-wrap row a-c" @click="serviceDetail(orderInfo.goods_id,orderInfo.cat_id)">
+      <img class="banner" :src="orderInfo.imgurl" alt="" />
       <div class="des-wrap">
         <div class="des">{{orderInfo.goodsname}}</div>
         <div class="value"><span>{{orderInfo.integral}}</span>积分</div>
@@ -50,7 +50,7 @@ export default {
       })
     },
     serviceDetail(flag, catid) {
-      this.$router.replace({
+      this.$router.push({
         path: '/serviceDetail',
         query: {
           id: flag,
@@ -90,6 +90,7 @@ export default {
     padding 0 40px
     .banner
       width 185px
+      height  185px
     .des-wrap
       margin-left 21px
       .des

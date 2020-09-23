@@ -28,3 +28,7 @@ export const getAdver = (params) => ajax(BASE_URL + 'api/adver/getlist',params)
 export const orderShow = (params) => ajax(BASE_URL + 'api/order/show',params) 
 // 获取订单列表：
 export const orderList = (params) => ajax(BASE_URL + 'api/order/getlist',params) 
+// 积分接口：
+export const score = (params) => ajax(BASE_URL + 'api/user/score',params) 
+// 积分列表：
+export const scorelist = (params) => ajax(BASE_URL + 'api/user/scorelist',params) 

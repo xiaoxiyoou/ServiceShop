@@ -18,6 +18,8 @@ Vue.prototype.$axios = axios
 Vue.prototype.$cookies = VueCookies
 import "../node_modules/swiper/css/swiper.css"
 share(document.title,document.title)
+import moment from 'moment'
+Vue.prototype.$moment = 'moment'
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title
@@ -37,6 +39,12 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     next()
+  }
+})
+Vue.filter('moment', function (value, formatString) {
+  if (value) {
+    formatString = formatString || 'YYYY年MM月';
+    return moment(value).format(formatString);
   }
 })
 new Vue({

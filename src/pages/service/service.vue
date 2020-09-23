@@ -129,10 +129,15 @@ export default {
       })
     },
     onSearch(val) {
-      Toast(val);
+      // Toast(val);
+      sessionStorage.setItem("serchValue",val)
+      this.$router.push({
+        path: '/searchList',
+      
+      })
     },
     onCancel() {
-      Toast('取消');
+      Toast('');
     },
     serviceList(searid, catid, dropName) {
       if (searid) {

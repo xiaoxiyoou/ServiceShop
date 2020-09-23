@@ -1,11 +1,11 @@
 <template>
   <div class="container">
-    <img class="banner" v-if="goodInfo.imgurl" :src="goodInfo.imgurl" alt="" />
-    <!-- <van-swipe v-if="goodInfo.imgurl" class="banner" :autoplay="3000" indicator-color="#b93662">
-      <van-swipe-item v-for="(image, index) in goodInfo.imgurl" :key="index">
-        <img :src="image" v-if="image" />
+    <!-- <img class="banner" v-if="goodInfo.imgurl" :src="goodInfo.imgurl" alt="" /> -->
+    <van-swipe v-if="images.length" class="banner" :autoplay="3000" indicator-color="#b93662">
+      <van-swipe-item v-for="(image, index) in images" :key="index">
+        <img class="swipe-img" :src="image" />
       </van-swipe-item>
-    </van-swipe> -->
+    </van-swipe>
     <img class="banner" v-else src="./banner.png" alt="" />
     <div class="title">{{goodInfo.title}}</div>
     <div class="des-wrap row a-c " ref="nav">
@@ -71,6 +71,7 @@ export default {
       info: '',
       goodInfo: '',
       dataList: [],
+      images: []
 
 
     }
@@ -139,6 +140,13 @@ export default {
       }).then(res => {
         console.log('详情', res)
         this.goodInfo = res.data.info
+        if (this.goodInfo.imglist) {
+          this.images = this.goodInfo.imglist.split('|')
+          this.images = this.images.filter(function (s) {
+            return s && s.trim();
+          });
+        }
+        console.log(' this.images', this.images)
 
       })
     },
@@ -206,6 +214,9 @@ export default {
 }
 </script>
 <style scoped lang="stylus">
+>>>.swipe-img
+  height 420px
+  width 100%
 .container
   position absolute
   top 0px

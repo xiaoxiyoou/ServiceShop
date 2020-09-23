@@ -1,25 +1,26 @@
 <template>
   <div class="container">
-    <div class="nav-wrap row">
-      <div class="nav-item nav-item-hover col a-c j-c">全部(4)</div>
+    <!-- <div class="nav-wrap row"> -->
+      <!-- <div class="nav-item nav-item-hover col a-c j-c">全部(4)</div>
       <div class="nav-item col a-c j-c">进行中的(4)</div>
-      <div class="nav-item col a-c j-c">已完成(4)</div>
-    </div>
+      <div class="nav-item col a-c j-c">已完成(4)</div> -->
+    <!-- </div> -->
     <van-list v-model="loading" :finished="finished" :finished-text="finishedtext" @load="onLoad">
       <div class="list-wrap">
-        <div class="list-cont" v-for="(item,index) in orderList" :key="index">
+        <div class="list-cont" v-for="(item,index) in orderList" :key="index" @click="order(item.ordernumber)">
           <div class="list-top row j-b a-c">
             <div class="list-time">{{item.createdate}}</div>
-            <div class="list-delet">删除</div>
+            <!-- <div class="list-delet">删除</div> -->
           </div>
           <div class="list-btm row">
             <img class="list-img" src="./img_url.png" alt="" />
             <div class="list-item col j-b">
-              <div class="list-name">{{item.ordername}}</div>
+              <div class="list-name">{{item.goodsname}}</div>
               <div class="list-com row a-c">
                 <div class="list-value"><span>{{item.integral}}</span>积分</div>
                 <div class="num">{{item.money}}元</div>
-                <div class="list-status_1">已完成</div>
+                <!-- <div class="list-status_1" v-if="item.state == 9">已完成</div>
+                <div class="list-status_2" v-else>进行中的</div> -->
               </div>
             </div>
           </div>
@@ -59,11 +60,11 @@ export default {
       loading: false,
       finished: false,
       page: 1,
-      size: 5,
+      size: 100,
       count: '',
       listStatus: true,
       onLoadtatus: false,
-      // state: 9
+      state: -1,
       orderList: [],
       noinfoShow: false,
 
@@ -88,6 +89,15 @@ export default {
         }, 1000);
 
       }
+    },
+      //查看订单
+    order(orderid) {
+      this.$router.push({
+        path: '/order',
+        query: {
+          orderid:  orderid,
+        }
+      })
     },
     _orderList() {
       this.onLoadtatus = true

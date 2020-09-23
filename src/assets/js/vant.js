@@ -46,3 +46,6 @@ Vue.use(DropdownItem);
 import { List } from 'vant';
 
 Vue.use(List);
+import { DatetimePicker } from 'vant';
+
+Vue.use(DatetimePicker);
