@@ -4,7 +4,7 @@ var wx = require('weixin-js-sdk')
 export default function wxShare({
   desc
 } = {}) { 
-  let link = 'http://jfmall.app.fuyulove.com/goods/index.html/#' +  localStorage.getItem('fromUrl')
+  let link = 'http://jfmall.app.fuyulove.com/goods/index.html#' +  localStorage.getItem('fromUrl')
   axios.get('http://jfmall.app.fuyulove.com/connect/jssdk', {
       params: {
         url: location.href.split('#')[0],
@@ -46,14 +46,14 @@ export default function wxShare({
         title: document.title,
         link: link,
         desc: desc,
-        imgUrl: 'http://b.fuyulove.com/wisdom/img/share.jpg',
+        imgUrl: 'http://jfmall.app.fuyulove.com/goods/share.png',
       })
     })
     wx.onMenuShareTimeline({
       title: document.title,
       link: link,
       desc: desc,
-      imgUrl: 'http://b.fuyulove.com/wisdom/img/share.jpg',
+      imgUrl: 'http://jfmall.app.fuyulove.com/goods/share.png',
     })
     wx.error(function () {})
   }

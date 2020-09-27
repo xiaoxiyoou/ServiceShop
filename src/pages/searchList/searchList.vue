@@ -16,7 +16,7 @@
           <div class="drop-name">{{item.name}}</div>
           <div class="" :class="{'check':isActive1 == index}"></div>
         </div>
-        <div class="drop-mask"></div>
+        <div class="drop-mask" @click="maskClose"></div>
       </div>
       <!-- 下拉 -->
       <div class="grid-drop" v-if="drop2">
@@ -24,7 +24,7 @@
           <div class="drop-name">{{item.name}}</div>
           <div class="" :class="{'check':isActive2 == index}"></div>
         </div>
-        <div class="drop-mask"></div>
+        <div class="drop-mask" @click="maskClose"></div>
       </div>
       <!-- <div class="bar"></div> -->
       <van-list v-model="loading" :finished="finished" :finished-text="finishedtext" @load="onLoad">
@@ -128,8 +128,10 @@ export default {
     this._cate()
     this._sear()
 
+
   },
   methods: {
+ 
     _sear() {
       sear({
       }).then(res => {
@@ -142,6 +144,7 @@ export default {
         if (searIndex > 0) {
           this.isActive2 = searIndex
         }
+     
 
       })
     },
@@ -211,9 +214,9 @@ export default {
         list({
           page: this.page,
           size: this.size,
-          catid:0,
-          sear: 0,
-          key:sessionStorage.getItem("serchValue")
+          // catid:0,
+          // sear: 0,
+          key: sessionStorage.getItem("serchValue")
         }).then(res => {
           console.log('列表接口', res)
           this.dataList = this.dataList.concat(res.data.list)

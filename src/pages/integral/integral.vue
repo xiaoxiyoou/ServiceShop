@@ -22,7 +22,7 @@
     <!-- 空状态 -->
     <img v-if="tipShow && !isActive" class="tips" src="./tips.png" alt="" />
     <div v-if="tipShow && !isActive" class="exchange row a-c j-c" @click="service">兑换好礼</div>
-    <div v-if="tipShow && isActive" class=" row a-c j-c" @click="service">暂无数据</div>
+    <div v-if="tipShow && isActive" class="noMsg row a-c j-c" @click="service">本月没有获得积分~</div>
     <!-- 列表 -->
     <div class="record-wrap">
       <div class="record-cont" v-for="(item,index) in dataList" :key="index">
@@ -187,6 +187,11 @@ export default {
           color #b6b6b6
         .textHover
           color #686194
+  .noMsg
+    margin 30px
+    margin-top 100px
+    color #666666
+    font-size 25px
   .record-wrap
     padding-bottom 200px
     background-color #f2f2f2
@@ -215,7 +220,7 @@ export default {
     text-align center
     width 181px
     color #ffffff
-    font-size 33px
+    font-size 30px
     margin 0 auto
     height 58px
     border-radius 23px

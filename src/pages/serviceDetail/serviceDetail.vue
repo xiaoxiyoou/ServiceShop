@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container" v-wechat-title="title">
     <!-- <img class="banner" v-if="goodInfo.imgurl" :src="goodInfo.imgurl" alt="" /> -->
     <van-swipe v-if="images.length" class="banner" :autoplay="3000" indicator-color="#b93662">
       <van-swipe-item v-for="(image, index) in images" :key="index">
@@ -56,6 +56,7 @@ import { Toast } from 'vant';
 export default {
   data() {
     return {
+      title:"",
       searchBarFixed: false,
       show: false,
       isActive: 0,
@@ -146,7 +147,7 @@ export default {
             return s && s.trim();
           });
         }
-        console.log(' this.images', this.images)
+        this.title =   this.goodInfo.title
 
       })
     },

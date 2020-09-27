@@ -33,7 +33,6 @@ export default {
   },
   mounted() {
     document.body.scrollTop = document.documentElement.scrollTop = 0
-    shareConfig('您的好友已获得企业宣传品拍摄剪辑成片服务', 'http://union.app.jzb768.com/#/giveIntegral?id=' + localStorage.getItem('shopId'), '点开查看吧~', 'http://wx.app.jzb768.com/picture/share.jpg')
     this._orderShow()
   },
   methods: {
@@ -46,6 +45,8 @@ export default {
       }).then(res => {
         console.log('订单详情', res)
         this.orderInfo = res.data.info
+        shareConfig('您的好友已兑换' + this.orderInfo.goodsname, 'http://jfmall.app.fuyulove.com/goods/index.html#/order?orderid=' + this.$route.query.orderid, '点开查看吧~', 'http://jfmall.app.fuyulove.com/goods/share.png')
+
 
       })
     },
@@ -90,7 +91,7 @@ export default {
     padding 0 40px
     .banner
       width 185px
-      height  185px
+      height 185px
     .des-wrap
       margin-left 21px
       .des

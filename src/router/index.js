@@ -33,6 +33,7 @@ const routes = [{
     component: resolve => require(['pages/getCard/getCard'], resolve),
     meta: {
       title: '进货储值卡',
+      requireAuth: true,
     }
   },
   {
@@ -41,6 +42,7 @@ const routes = [{
     component: resolve => require(['pages/integral/integral'], resolve),
     meta: {
       title: '积分明细',
+      requireAuth: true,
     }
   },
   {
@@ -49,6 +51,7 @@ const routes = [{
     component: resolve => require(['pages/service/service'], resolve),
     meta: {
       title: '享服务',
+      requireAuth: true,
     }
   },
   {
@@ -57,6 +60,7 @@ const routes = [{
     component: resolve => require(['pages/serviceList/serviceList'], resolve),
     meta: {
       title: '商品列表',
+      requireAuth: true,
     }
   },
   {
@@ -64,7 +68,8 @@ const routes = [{
     name: 'searchList',
     component: resolve => require(['pages/searchList/searchList'], resolve),
     meta: {
-      title: '商品列表',
+      title: '搜索内容',
+      requireAuth: true,
     }
   },
   {
@@ -73,6 +78,7 @@ const routes = [{
     component: resolve => require(['pages/serviceDetail/serviceDetail'], resolve),
     meta: {
       title: '商品详情',
+      requireAuth: true,
     }
   },
   {
@@ -80,7 +86,8 @@ const routes = [{
     name: 'result',
     component: resolve => require(['pages/result/result'], resolve),
     meta: {
-      title: '兑换失败',
+      title: '兑换成功',
+      requireAuth: true,
     }
   },
   {
@@ -89,6 +96,7 @@ const routes = [{
     component: resolve => require(['pages/order/order'], resolve),
     meta: {
       title: '查看订单',
+      requireAuth: true,
     }
   },
   {
@@ -97,6 +105,7 @@ const routes = [{
     component: resolve => require(['pages/signIn/signIn'], resolve),
     meta: {
       title: '账号登录',
+      requireAuth: true,
     }
   },
   {
@@ -105,6 +114,7 @@ const routes = [{
     component: resolve => require(['pages/personCenter/personCenter'], resolve),
     meta: {
       title: '个人中心',
+      requireAuth: true,
     }
   },
   {
@@ -113,6 +123,7 @@ const routes = [{
     component: resolve => require(['pages/orderList/orderList'], resolve),
     meta: {
       title: '查看订单',
+      requireAuth: true,
     }
   },
 

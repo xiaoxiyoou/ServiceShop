@@ -4,14 +4,8 @@
     <div class="status">兑换成功</div>
     <div class="tip">消耗<span>{{integral}}</span>积分</div>
     <div class="btm row a-c j-c" @click="order">查看订单</div>
-    <div class="ad-wrap">
-      <img class="ad" src="./integral.png" alt="" />
-      <div class="des1">进货储值赚积分</div>
-      <div class="des2" @click="getCard">去赚积分></div>
-    </div>
-    <div class="ad-wrap">
-      <img class="ad" src="./web.png" alt="" />
-      <img class="btn" src="./btn.png" alt="" />
+    <div class="ad-wrap" v-for="(item,index) in advList" :key="index" @click="advLink(item.link)">
+      <img class="ad" :src="item.imgurl" alt="" />
     </div>
   </div>
 
@@ -22,7 +16,8 @@ export default {
   data() {
     return {
       sign: require('./success.png'),
-      integral: this.$route.query.integral
+      integral: this.$route.query.integral,
+      advList: []
 
 
     }
@@ -38,6 +33,7 @@ export default {
         type: 1
       }).then(res => {
         console.log('广告', res)
+        this.advList = res.data.list
 
       })
     },
@@ -50,13 +46,12 @@ export default {
         }
       })
     },
-    //确认购买
-    getCard() {
-      this.$router.push({
-        path: '/getCard',
+    // 查看广告
+    advLink(link) {
+      window.location.href = link
 
-      })
     }
+
 
   },
   components: {

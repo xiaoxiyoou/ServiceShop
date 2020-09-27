@@ -26,9 +26,9 @@
         </div>
       </div>
       <div class="block-wrap row j-b">
-        <img class="block" src="./block_1.png" alt="" @click="serviceList(1,0,'5千积分以下')" />
-        <img class="block" src="./block_2.png" alt="" @click="serviceList(1,0,'5千-2万积分')" />
-        <img class="block" src="./block_3.png" alt="" @click="serviceList(1,0,'2万积分以上')"/>
+        <img class="block" src="./block_1.png" alt="" @click="serviceList('1',0,'5千积分以下')" />
+        <img class="block" src="./block_2.png" alt="" @click="serviceList('2',0,'5千-2万积分')" />
+        <img class="block" src="./block_3.png" alt="" @click="serviceList('3',0,'2万积分以上')" />
       </div>
     </div>
     <div class="bar"></div>
@@ -48,10 +48,10 @@
           <img class="goods-img" :src="item.imgurl" v-if="item.imgurl" alt="">
           <img class="goods-img" src="./../../assets/img/noMsg.png" v-else alt="">
           <div class="goods-title">{{item.title}}</div>
-         <div class="row a-c">
-              <div class="goods-value"><span>{{item.integral}}</span> 积分</div>
-              <div class="goods-num">{{item.price}}元</div>
-            </div>
+          <div class="row a-c">
+            <div class="goods-value"><span>{{item.integral}}</span> 积分</div>
+            <div class="goods-num">{{item.price}}元</div>
+          </div>
         </div>
       </div>
     </div>
@@ -130,10 +130,10 @@ export default {
     },
     onSearch(val) {
       // Toast(val);
-      sessionStorage.setItem("serchValue",val)
+      sessionStorage.setItem("serchValue", val)
       this.$router.push({
         path: '/searchList',
-      
+
       })
     },
     onCancel() {

@@ -93,13 +93,13 @@ export default {
     _postMediaId(id) {
       axios({
         method: "post",
-        url: 'http://cdn.fuyulove.com/action/wxImgDown.ashx',
+        url: 'http://cdn.fuyulove.com/action/wxImgDownthird.ashx',
         headers: {
           'Content-type': 'application/x-www-form-urlencoded'
         },
         data: {
           media_id: id,
-          sid: 659
+          sid: 660
         },
         transformRequest: [function (data) {
           let ret = ''

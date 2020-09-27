@@ -16,7 +16,7 @@
           <div class="drop-name">{{item.name}}</div>
           <div class="" :class="{'check':isActive1 == index}"></div>
         </div>
-        <div class="drop-mask"></div>
+        <div class="drop-mask" @click="maskClose"></div>
       </div>
       <!-- 下拉 -->
       <div class="grid-drop" v-if="drop2">
@@ -24,7 +24,7 @@
           <div class="drop-name">{{item.name}}</div>
           <div class="" :class="{'check':isActive2 == index}"></div>
         </div>
-        <div class="drop-mask"></div>
+        <div class="drop-mask" @click="maskClose"></div>
       </div>
       <div class="bar"></div>
       <van-list v-model="loading" :finished="finished" :finished-text="finishedtext" @load="onLoad">
@@ -131,6 +131,10 @@ export default {
 
   },
   methods: {
+    maskClose() {
+      this.drop1 = false
+      this.drop2 = false
+    },
     _sear() {
       sear({
       }).then(res => {
@@ -143,7 +147,6 @@ export default {
         if (searIndex > 0) {
           this.isActive2 = searIndex
         }
-
       })
     },
     _cate() {

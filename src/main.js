@@ -17,9 +17,10 @@ Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 Vue.prototype.$cookies = VueCookies
 import "../node_modules/swiper/css/swiper.css"
-share(document.title,document.title)
 import moment from 'moment'
 Vue.prototype.$moment = 'moment'
+import VueWechatTitle from 'vue-wechat-title'
+Vue.use(VueWechatTitle)
 router.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title
@@ -31,6 +32,7 @@ router.beforeEach((to, from, next) => {
     }
 
     if (localStorage.getItem('userid') != "undefined" && localStorage.getItem('userid') != null && localStorage.getItem('userid') != '' && localStorage.getItem('userid')) {
+      share(document.title, document.title)
       next();
     } else {
       next({

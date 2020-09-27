@@ -17,7 +17,7 @@ export default {
   methods: {
     _getCode() {
       let uid = this.getUrlParam('uid')
-      this.sid = 659
+      this.sid = 660
       if (uid === '' || uid === undefined || uid === null) {
         this.GetCode(this.sid)
       } else {

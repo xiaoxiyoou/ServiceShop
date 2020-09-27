@@ -1,5 +1,5 @@
 <template>
-  <div class="container col a-c">
+  <div class="container col a-c" v-if="showPage">
     <div class="head-wrap row a-c ">
       <img class="headImg" :src="info.headimgurl" alt="">
       <div class="headName">{{info.nickname}}</div>
@@ -76,7 +76,7 @@ export default {
   data() {
     return {
       info: '',
-      show: true,
+      showPage: false,
       images: [
         require('./swiper.png'),
         require('./swiper.png')
@@ -98,15 +98,13 @@ export default {
     }
   },
   created() {
-    // Toast.loading({
-    //   forbidClick: true
-    // })
-  },
-  mounted() {
     this._cate()
     this._list()
     this._userInfo()
     this._getAdver()
+  },
+  mounted() {
+
 
 
 
@@ -122,6 +120,7 @@ export default {
       }).then(res => {
         console.log('广告', res)
         this.bannerList = res.data.list
+        this.showPage = true
 
       })
     },

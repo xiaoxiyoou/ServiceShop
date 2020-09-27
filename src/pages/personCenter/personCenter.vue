@@ -1,7 +1,7 @@
 <template>
   <div class="container col a-c">
     <div class="title row a-c">个人信息</div>
-    <div class="input-wrap row a-c j-b" style="height:77px">
+    <div class="input-wrap row a-c j-b" style="height:80px">
       <div class="input-name">用户头像</div>
       <img class="headImg" :src="info.headimgurl" @click=" cropShow(true)" alt="" />
     </div>
@@ -165,7 +165,7 @@ export default {
 </script>
 <style scoped lang="stylus">
 .container
-  position absolute
+  // position absolute
   top 0px
   width 100%
   height 100%
@@ -186,8 +186,8 @@ export default {
     margin-top 89px
     z-index 1
     .headImg
-      width 140px
-      height 140px
+      width 100px
+      height 100px
       border-radius 50%
       border 2px solid #ffffff
     .headText
@@ -206,8 +206,8 @@ export default {
       color #000000
       font-size 31px
     .headImg
-      width 140px
-      height 140px
+      width 115px
+      height 115px
       border-radius 50%
       border 2px solid #ffffff
     .input-item
