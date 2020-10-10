@@ -34,25 +34,25 @@
       </div>
     </div>
     <div class="title row a-c">订单信息</div>
-    <div class="input-wrap  row a-c j-b">
+    <div class="input-wrap  row a-c j-b "  @click="orderList">
       <div class="input-name">订单详情</div>
-      <div class="input-item row a-c" @click="orderList">
-        <div class="check">点击查看</div>
+      <div class="input-item row a-c">
+        <!-- <div class="check">点击查看</div> -->
         <img class="arrow" src="./arrow_2.png" alt="" />
       </div>
     </div>
     <div class="title row a-c">积分信息</div>
-    <div class="input-wrap  row a-c j-b">
+    <div class="input-wrap  row a-c j-b" @click="integral">
       <div class="input-name">当前积分</div>
-      <div class="input-item row a-c" @click="integral">
-        <div class="check">查看明细</div>
+      <div class="input-item row a-c" >
+        <!-- <div class="check">查看明细</div> -->
         <img class="arrow" src="./arrow_2.png" alt="" />
       </div>
     </div>
-    <div class="input-wrap row a-c j-b">
+    <div class="input-wrap row a-c j-b"  @click="getCard">
       <div class="input-name">积分获取</div>
-      <div class="input-item row a-c" @click="getCard">
-        <div class="check">查看明细</div>
+      <div class="input-item row a-c">
+        <!-- <div class="check">查看明细</div> -->
         <img class="arrow" src="./arrow_2.png" alt="" />
       </div>
     </div>

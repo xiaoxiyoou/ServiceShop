@@ -2,10 +2,11 @@
   <div class="container">
     <div class="title-wrap row  a-c">
       <img class="correct" src="./correct.png" alt="" />
-      <div class="text">兑换成功</div>
+      <div class="text">{{title}}</div>
     </div>
     <div class="good-wrap row a-c" @click="serviceDetail(orderInfo.goods_id,orderInfo.cat_id)">
-      <img class="banner" :src="orderInfo.imgurl" alt="" />
+      <img class="banner" v-if="orderInfo.imgurl" :src="orderInfo.imgurl" alt="" />
+      <img class="banner" v-else src="./../../assets/img/noMsg.png" alt="" />
       <div class="des-wrap">
         <div class="des">{{orderInfo.goodsname}}</div>
         <div class="value"><span>{{orderInfo.integral}}</span>积分</div>
@@ -26,7 +27,8 @@ export default {
   data() {
     return {
       qrcodeCon: false,
-      orderInfo: ''
+      orderInfo: '',
+      title: "兑换成功"
 
 
     }
@@ -34,6 +36,9 @@ export default {
   mounted() {
     document.body.scrollTop = document.documentElement.scrollTop = 0
     this._orderShow()
+    if (this.$route.query.flag == 1) {
+      this.title = "订单详情 "
+    }
   },
   methods: {
     shareIntegral(flag) {

@@ -8,24 +8,29 @@
     </van-swipe>
     <img class="banner" v-else src="./banner.png" alt="" />
     <div class="title">{{goodInfo.title}}</div>
-    <div class="des-wrap row a-c " ref="nav">
+    <div class="des-wrap row a-c ">
       <div class="value"><span>{{goodInfo.integral}}</span>积分</div>
       <div class="num">{{goodInfo.price}}元</div>
       <div class="tip">不支持退换</div>
     </div>
-    <div class="bar"></div>
+    <div class="bar" ref="nav"></div>
     <div class="nav-wrap row a-c" :class="searchBarFixed == true ? 'isFixed' :''">
       <div class="nav-item row a-c j-c" :class="{'navtHover':isActive == index}" v-for="(item,index) in navList" :key="index" @click="activeNav(index)">{{item.name}}</div>
     </div>
+    <div class="nav-wrap row a-c" style="border-bottom:1px solid #ffffff" v-if="searchBarFixed"></div>
     <div id="searchBar"></div>
-    <div class="content" v-html="goodInfo.contents"></div>
-    <div class="goodstitle" ref="goodstitle">相关推荐</div>
+    <div class="content"  v-html="goodInfo.contents"></div>
+    <div class="goodstitle row a-c j-c" ref="goodstitle">相关推荐</div>
+    <div class="goodstitleTip" v-if="!dataList.length">暂无推荐，敬请期待~</div>
     <div class="goods-wrap row j-b f-w">
       <div class="goods-item" v-for="(item,index) in dataList" :key="index" @click="serviceDetail(item.id,item.cat_id)">
         <img class="goods-img" :src="item.imgurl" v-if="item.imgurl" alt="">
         <img class="goods-img" src="./../../assets/img/noMsg.png" v-else alt="">
         <div class="goods-title">{{item.title}}</div>
-        <div class="goods-value"><span>{{item.integral}}</span> 积分</div>
+        <div class="row a-c">
+          <div class="goods-value"><span>{{item.integral}}</span> 积分</div>
+          <div class="goods-num">{{item.price}}元</div>
+        </div>
       </div>
     </div>
     <div class="btm-wrap row j-b a-c">
@@ -56,7 +61,7 @@ import { Toast } from 'vant';
 export default {
   data() {
     return {
-      title:"",
+      title: "",
       searchBarFixed: false,
       show: false,
       isActive: 0,
@@ -147,7 +152,7 @@ export default {
             return s && s.trim();
           });
         }
-        this.title =   this.goodInfo.title
+        this.title = this.goodInfo.title
 
       })
     },
@@ -271,7 +276,7 @@ export default {
       font-weight 700
       font-size 32px
   .content
-    padding 10px 10px 30px
+    padding 10px 10px 0px
     font-size 30px
     >>>img
       width 100%
@@ -304,6 +309,7 @@ export default {
   .pop-wrap
     width 511px
     border-radius 10px
+    overflow hidden
     .pop-img
       width 100%
     .pop-des
@@ -320,17 +326,26 @@ export default {
       .cancel
         width 50%
         color #969696
+        height 100%
       .confirm
         width 50%
         background #686194
         color #ffffff
+        height 100%
   .goodstitle
     text-align center
     height 50px
+    height 90px
+  .goodstitleTip
+    padding-left 30px
+    margin-top 30px
+    font-size 28px
+    color #666666
   .goods-wrap
     padding 30px 30px 0px
     top 90px
-    margin-bottom 150px
+    margin-bottom 250px
+    padding-bottom 100px
     .goods-item
       width 336px
       height 441px
@@ -347,6 +362,11 @@ export default {
         font-size 25px
         margin-left 16px
         margin-top 10px
+        overflow hidden
+        display -webkit-box
+        -webkit-box-orient vertical
+        -webkit-line-clamp 1
+        text-overflow ellipsis
       .goods-value
         color #b93662
         font-size 24px
@@ -354,4 +374,10 @@ export default {
         margin-top 10px
         span
           font-size 33px
+      .goods-num
+        text-decoration line-through
+        color #c6c6c6
+        margin-left 10px
+        font-size 24px
+        margin-top 15px
 </style>

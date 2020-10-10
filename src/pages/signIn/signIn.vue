@@ -90,9 +90,13 @@ export default {
             Toast('绑定成功')
             if (this.$route.query.sign == 1) {
               this.$router.go(-1)
-            } else {
+            } else if (this.$route.query.sign == 2) {
               this.$router.replace({
                 path: '/personCenter',
+              })
+            } else if (this.$route.query.sign == 3) {
+              this.$router.replace({
+                path: '/integral',
               })
             }
           } else {

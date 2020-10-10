@@ -104,7 +104,7 @@ const routes = [{
     name: 'signIn',
     component: resolve => require(['pages/signIn/signIn'], resolve),
     meta: {
-      title: '账号登录',
+      title: '手机号绑定',
       requireAuth: true,
     }
   },

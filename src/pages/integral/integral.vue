@@ -5,7 +5,7 @@
       <div class="date-text">{{now | moment  }}</div>
       <img class="triangle" src="./triangle.png" alt="" />
     </div>
-    <div class="values">{{parseInt(scoreInfo.sr) + parseInt(scoreInfo.zc)}}</div>
+    <div class="values">{{info.integral}}</div>
     <div class="tip">{{scoreInfo.tip}}</div>
     <div class="mid-wrap row a-c j-c">
       <div class="mid-cont row a-c">
@@ -40,7 +40,7 @@
 
 </template>
 <script type="text/ecmascript-6">
-import { score, scorelist } from 'api/index'
+import { score, scorelist, userInfo } from 'api/index'
 export default {
   data() {
     return {
@@ -55,23 +55,33 @@ export default {
       dataList: [],
       tipShow: false,
       isActive: true,
-      scoreInfo: ""
+      scoreInfo: "",
+      info: '',
 
     }
   },
   mounted() {
     document.body.scrollTop = document.documentElement.scrollTop = 0
-
+    this._userInfo()
     this._score()
     this._scorelist()
 
   },
   methods: {
+    _userInfo() {
+      userInfo({
+      }).then(res => {
+        console.log('个人信息', res)
+        this.info = res.data.info
+
+      })
+    },
     // 切换积分
     getInter(state) {
       this.state = state
       this.isActive = !this.isActive
       this._scorelist()
+      this._score()
     },
     _score() {
       score({
@@ -115,6 +125,7 @@ export default {
       this.datetime = false
       this.now = val
       this._scorelist()
+      this._score()
     },
     cancel() {
       this.datetime = false
@@ -209,6 +220,11 @@ export default {
         .record-name
           font-size 30px
           color #000000
+          overflow hidden
+          display -webkit-box
+          -webkit-box-orient vertical
+          -webkit-line-clamp 2
+          text-overflow ellipsis
         .record-num
           font-size 24px
           color #666666

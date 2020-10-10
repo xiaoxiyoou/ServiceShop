@@ -370,5 +370,5 @@ export default {
           color #c6c6c6
           margin-left 10px
           font-size 24px
-          margin-top 5px
+          margin-top 15px
 </style>

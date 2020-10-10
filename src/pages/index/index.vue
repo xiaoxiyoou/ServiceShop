@@ -8,7 +8,7 @@
     <div class="swiper-wrapper col a-c">
       <van-swipe :autoplay="3000" indicator-color="#686194">
         <van-swipe-item v-for="(item, index) in bannerList" :key="index">
-          <img :src="item.imgurl" />
+          <img :src="item.imgurl" @click="onClick(item.link)" />
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -89,7 +89,7 @@ export default {
       loading: false,
       finished: false,
       page: 1,
-      size: 5,
+      size: 6,
       count: '',
       listStatus: true,
       onLoadtatus: false
@@ -114,6 +114,11 @@ export default {
   destroy() {
   },
   methods: {
+    onClick(link) {
+      console.log(link)
+      window.location.href = link
+    },
+
     _getAdver() {
       getAdver({
         type: 0
@@ -225,6 +230,7 @@ export default {
     },
     // 享服务
     service() {
+
       this.$router.push({
         path: '/service',
       })
@@ -237,9 +243,18 @@ export default {
     },
     //积分
     integral() {
-      this.$router.push({
-        path: '/integral',
-      })
+      if (this.info.status == 1) {
+        this.$router.push({
+          path: '/integral',
+        })
+      } else {
+        this.$router.push({
+          path: '/signIn',
+          query: {
+            sign: 3,
+          }
+        })
+      }
     },
 
 
@@ -404,5 +419,5 @@ export default {
           color #c6c6c6
           margin-left 10px
           font-size 24px
-          margin-top 10px
+          margin-top 15px
 </style>

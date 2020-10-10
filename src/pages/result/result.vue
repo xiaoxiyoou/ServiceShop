@@ -1,8 +1,10 @@
 <template>
   <div class="container col a-c">
     <img class="sign" :src="sign" alt="" />
-    <div class="status">兑换成功</div>
+    <div class="status">恭喜您，兑换成功</div>
     <div class="tip">消耗<span>{{integral}}</span>积分</div>
+    <div class="point">此为服务类商品，1-3个工作日将有客服人员</div>
+    <div class="point">与您联系，请保持通讯畅通，谢谢！</div>
     <div class="btm row a-c j-c" @click="order">查看订单</div>
     <div class="ad-wrap" v-for="(item,index) in advList" :key="index" @click="advLink(item.link)">
       <img class="ad" :src="item.imgurl" alt="" />
@@ -78,8 +80,13 @@ export default {
     color #333333
     margin-top 20px
     font-size 27px
+    margin-bottom 46px
     span
       color #686194
+  .point
+    color #fe8678
+    font-size 32px
+    line-height 48px
   .btm
     width 330px
     height 88px

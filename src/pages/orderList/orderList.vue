@@ -9,11 +9,12 @@
       <div class="list-wrap">
         <div class="list-cont" v-for="(item,index) in orderList" :key="index" @click="order(item.ordernumber)">
           <div class="list-top row j-b a-c">
-            <div class="list-time">{{item.createdate}}</div>
+            <div class="list-time">订单编号:{{item.ordernumber}}</div>
             <!-- <div class="list-delet">删除</div> -->
           </div>
           <div class="list-btm row">
-            <img class="list-img" src="./img_url.png" alt="" />
+            <img class="list-img" v-if="item.imgurl" :src="item.imgurl" alt="" />
+            <img class="list-img" v-else src="./../../assets/img/noMsg.png" alt="" />
             <div class="list-item col j-b">
               <div class="list-name">{{item.goodsname}}</div>
               <div class="list-com row a-c">
@@ -96,6 +97,7 @@ export default {
         path: '/order',
         query: {
           orderid:  orderid,
+          flag:  1,
         }
       })
     },
