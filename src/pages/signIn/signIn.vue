@@ -92,7 +92,7 @@ export default {
               this.$router.go(-1)
             } else if (this.$route.query.sign == 2) {
               this.$router.replace({
-                path: '/personCenter',
+                path: '/index',
               })
             } else if (this.$route.query.sign == 3) {
               this.$router.replace({

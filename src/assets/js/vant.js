@@ -49,3 +49,7 @@ Vue.use(List);
 import { DatetimePicker } from 'vant';
 
 Vue.use(DatetimePicker);
+import { Tab, Tabs } from 'vant';
+
+Vue.use(Tab);
+Vue.use(Tabs);

@@ -3,7 +3,8 @@
     <div class="head-wrap row a-c ">
       <img class="headImg" :src="info.headimgurl" alt="">
       <div class="headName">{{info.nickname}}</div>
-      <div class="headbtn row a-c j-c" @click="signIn">个人中心</div>
+      <div class="headbtn headbtnHover row a-c j-c" v-if=" parseInt(info.status)" @click="signIn">个人中心</div>
+      <div class="headbtn row a-c j-c" v-else @click="band">绑定手机号</div>
     </div>
     <div class="swiper-wrapper col a-c">
       <van-swipe :autoplay="3000" indicator-color="#686194">
@@ -25,12 +26,29 @@
       </div>
     </div>
     <div class="bar"></div>
+    <div class="grid-wrap">
+      <div class="grid-title row a-c j-b" @click="service">
+        <div class="grid-title-left row a-c">
+          <div class="vertical"></div>
+          <div class="grid-title-text">现可采购用品</div>
+        </div>
+      </div>
+      <img class="join" @click="join" :src="wareAdv.imgurl" alt="">
+      <div class="logo-wrap row j-b">
+        <div class="logo-cont col a-c j-c" v-for="(item,index) in wareData" :key="index" @click="wareList(item.id,index)">
+          <img class="logo" :src="item.icon" alt="" />
+          <div class="logo-title">{{item.name}}</div>
+          <div class="logo-des">{{item.intro}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="bar"></div>
     <!-- 导航栏 -->
     <div class="grid-wrap">
       <div class="grid-title row a-c j-b" @click="service">
         <div class="grid-title-left row a-c">
           <div class="vertical"></div>
-          <div class="grid-title-text">享服务</div>
+          <div class="grid-title-text">现可尊享服务</div>
         </div>
         <div class="grid-title-right row a-c">
           <div class="grid-more">查看更多</div>
@@ -69,8 +87,7 @@
   </div>
 </template>
 <script type="text/ecmascript-6">
-import { cate, list, userInfo } from 'api/index'
-// import { Toast } from 'vant';
+import { cate, list, userInfo, wareCate } from 'api/index'
 import { getAdver } from 'api/index'
 export default {
   data() {
@@ -92,7 +109,9 @@ export default {
       size: 6,
       count: '',
       listStatus: true,
-      onLoadtatus: false
+      onLoadtatus: false,
+      wareData: [], 
+      wareAdv: [],
 
 
     }
@@ -102,6 +121,8 @@ export default {
     this._list()
     this._userInfo()
     this._getAdver()
+    this._wareCate()
+    this._getAdver2()
   },
   mounted() {
 
@@ -118,7 +139,14 @@ export default {
       console.log(link)
       window.location.href = link
     },
+    _wareCate() {
+      wareCate({
+      }).then(res => {
+        console.log('采购', res)
+        this.wareData = res.data.cate
 
+      })
+    },
     _getAdver() {
       getAdver({
         type: 0
@@ -126,6 +154,15 @@ export default {
         console.log('广告', res)
         this.bannerList = res.data.list
         this.showPage = true
+
+      })
+    },
+    _getAdver2() {
+      getAdver({
+        type: 2
+      }).then(res => {
+        console.log('采购广告', res)
+        this.wareAdv = res.data.list[0]
 
       })
     },
@@ -206,18 +243,31 @@ export default {
 
     },
     signIn() {
-      if (this.info.status == 1) {
-        this.$router.push({
-          path: '/personCenter',
-        })
-      } else {
-        this.$router.push({
-          path: '/signIn',
-          query: {
-            sign: 2,
-          }
-        })
-      }
+      this.$router.push({
+        path: '/personCenter',
+      })
+    },
+    join() {
+      this.$router.push({
+        path: '/join',
+      })
+    },
+    band() {
+      this.$router.push({
+        path: '/signIn',
+        query: {
+          sign: 2,
+        }
+      })
+    },
+    wareList(id, active) {
+      this.$router.push({
+        path: '/wareList',
+        query: {
+          brand: id,
+          active: active
+        }
+      })
     },
     serviceDetail(flag, catid) {
       this.$router.push({
@@ -276,12 +326,12 @@ export default {
     width 696px
     position relative
     .headImg
-      width 0.82rem
-      height 0.82rem
+      width 70px
+      height 70px
       border-radius 50%
     .headName
       color #292929
-      font-size 25px
+      font-size 28px
       margin-left 10px
     .headbtn
       position absolute
@@ -291,12 +341,13 @@ export default {
       border-radius 22px
       color #ffffff
       font-size 24px
-      background-color #665d91
+      background-color #E00000
+    .headbtnHover
+      background #686194
   .swiper-wrapper
     width 100%
     .van-swipe
       width 92.8%
-      // margin-top 10.5px
       margin-bottom 10px
       border-radius 5px
       height 111px
@@ -355,6 +406,7 @@ export default {
     width 100%
     .grid-title
       padding 0 38px 0 20px
+      border-bottom 1px solid #f2f2f2
       height 90px
       .grid-title-left
         .vertical
@@ -373,10 +425,30 @@ export default {
         .more-img
           width 10px
           margin-left 8px
+    .join
+      width 696px
+      margin 0 auto
+      display block
+      border-radius 10px
+      margin-top 21px
+    .logo-wrap
+      padding 0 45px
+      width 100%
+      margin-top 19px
+      margin-bottom 35px
+      .logo-cont
+        .logo
+          width 145px
+        .logo-title
+          font-size 29px
+          color #2d2d2d
+          font-weight 700
+        .logo-des
+          font-size 23px
+          color #8a898a
     .grid-list
       padding 0 35px
       height 177px
-      border-top 1px solid #f2f2f2
       .grid-item
         .grid-item-img
           width 64px

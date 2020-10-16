@@ -1,15 +1,26 @@
 <template>
   <div class="container">
+    <div class="swiper-wrapper col a-c">
+      <van-swipe :autoplay="3000" indicator-color="#686194">
+        <van-swipe-item v-for="(item, index) in bannerList" :key="index">
+          <img :src="item.imgurl" @click="onClick(item.link)" />
+        </van-swipe-item>
+      </van-swipe>
+    </div>
+    <van-tabs v-model="active" sticky title-active-color="#686194" color="#686194" @click="wareItem()">
+      <van-tab v-for="(item,index) in wareData" :title="item.name" :key="index">
+      </van-tab>
+    </van-tabs>
     <div class="grid-wrap">
       <van-list v-model="loading" :finished="finished" :finished-text="finishedtext" @load="onLoad">
         <div class="goods-wrap row j-b f-w">
-          <div class="goods-item" v-for="(item,index) in dataList" :key="index" @click="serviceDetail(item.id,item.cat_id)">
+          <div class="goods-item" v-for="(item,index) in dataList" :key="index">
             <img class="goods-img" :src="item.imgurl" v-if="item.imgurl" alt="">
             <img class="goods-img" src="./../../assets/img/noMsg.png" v-else alt="">
             <div class="goods-title">{{item.title}}</div>
-            <div class="row a-c">
-              <div class="goods-value"><span>{{item.integral}}</span> 积分</div>
-              <div class="goods-num">{{item.price}}元</div>
+            <div class="goodsbtm row a-c j-b">
+              <div class="goods-value">{{item.specific}} </div>
+              <div class="goods-num">{{item.describe}}</div>
             </div>
           </div>
         </div>
@@ -21,10 +32,12 @@
 </template>
 <script type="text/ecmascript-6">
 import noMessage from 'components/noMessage/noMessage'
-import { list } from 'api/index'
+import { wareList, wareCate } from 'api/index'
 export default {
   data() {
     return {
+      wareData: [],
+      active: 1,
       noinfoShow: false,
       // 下拉加载
       dataList: [],
@@ -36,20 +49,40 @@ export default {
       count: '',
       listStatus: true,
       onLoadtatus: false,
+      brandId: "",
+      bannerList: [ { imgurl: require("./banner_2.png") }, { imgurl: require("./banner_3.png") },{ imgurl: require("./banner_1.png") }],
+      wareId: []
 
 
     }
   },
   mounted() {
     document.body.scrollTop = document.documentElement.scrollTop = 0
+    this.brandId = this.$route.query.brand
+    this.active =  parseInt(this.$route.query.active) + 1
     this._list()
-
+    this._wareCate()
 
   },
   methods: {
+    // 切换
+    wareItem() {
+      this.loadState()
+      this.brandId = this.wareId[this.active]
+      this._list()
+    },
+    _wareCate() {
+      wareCate({
+      }).then(res => {
+        console.log('采购', res)
+        this.wareData = res.data.cate
+        this.wareData.unshift({ name: "全部", id: 0 })
+        this.wareId = this.wareData.map(function (item) {
+          return item.id;
+        });
 
-
-
+      })
+    },
     onLoad() {
       if (this.onLoadtatus) {
         setTimeout(() => {
@@ -68,12 +101,10 @@ export default {
       this.onLoadtatus = true
       if (this.listStatus) {
         this.listStatus = false
-        list({
+        wareList({
           page: this.page,
           size: this.size,
-          // catid:0,
-          // sear: 0,
-          key: sessionStorage.getItem("serchValue")
+          brand: this.brandId
         }).then(res => {
           console.log('列表接口', res)
           this.dataList = this.dataList.concat(res.data.list)
@@ -85,7 +116,7 @@ export default {
             this.finishedtext = ''
           } else {
             this.noinfoShow = false
-            this.finishedtext = '没有更多数据了'
+            this.finishedtext = '更多产品请咨询客服'
           }
 
         })
@@ -100,15 +131,7 @@ export default {
       this.loading = false
 
     },
-    serviceDetail(flag, catid) {
-      this.$router.push({
-        path: '/serviceDetail',
-        query: {
-          id: flag,
-          catid: catid
-        }
-      })
-    },
+
 
   },
   components: {
@@ -117,6 +140,8 @@ export default {
 }
 </script>
 <style scoped lang="stylus">
+>>>.van-tab--active
+  font-weight 700
 >>>.van-list__finished-text
   background-color #f2f2f2
 .container
@@ -126,6 +151,18 @@ export default {
   width 100%
   height 100%
   bottom 0
+  .swiper-wrapper
+    width 100%
+    height 325px
+    .van-swipe
+      width 100%
+      height 325px
+      overflow hidden
+    .van-swipe-item
+      img
+        width 100%
+        height auto
+        overflow hidden
   .grid-wrap
     width 100%
     .grid-title
@@ -188,6 +225,7 @@ export default {
     .goods-wrap
       background-color #f2f2f2
       padding 30px 30px 0px
+      // position relative
       top 90px
       .goods-item
         width 336px
@@ -201,7 +239,7 @@ export default {
           height 331px
           display block
         .goods-title
-          font-size 25px
+          font-size 28px
           margin-left 16px
           margin-top 10px
           overflow hidden
@@ -209,17 +247,17 @@ export default {
           -webkit-box-orient vertical
           -webkit-line-clamp 1
           text-overflow ellipsis
-        .goods-value
-          color #b93662
-          font-size 24px
-          margin-left 16px
-          margin-top 10px
-          span
-            font-size 33px
-        .goods-num
-          text-decoration line-through
-          color #c6c6c6
-          margin-left 10px
-          font-size 24px
-          margin-top 15px
+        .goodsbtm
+          padding 0 16px
+          .goods-value
+            color #929292
+            font-size 24px
+            margin-top 10px
+            span
+              font-size 33px
+          .goods-num
+            color #929292
+            margin-left 10px
+            font-size 24px
+            margin-top 15px
 </style>

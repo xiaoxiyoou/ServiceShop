@@ -32,3 +32,9 @@ export const orderList = (params) => ajax(BASE_URL + 'api/order/getlist',params)
 export const score = (params) => ajax(BASE_URL + 'api/user/score',params) 
 // 积分列表：
 export const scorelist = (params) => ajax(BASE_URL + 'api/user/scorelist',params) 
+// 获取采购商品品牌接口
+export const wareCate = (params) => ajax(BASE_URL + 'api/wares/brand',params) 
+// 获取采购商品接口
+export const wareList = (params) => ajax(BASE_URL + 'api/wares/list',params) 
+// 获取采购商品接口
+export const joinSubmit = (params) => ajax(BASE_URL + 'api/wares/join',params,'POST') 

@@ -19,7 +19,7 @@
     </div>
     <div class="nav-wrap row a-c" style="border-bottom:1px solid #ffffff" v-if="searchBarFixed"></div>
     <div id="searchBar"></div>
-    <div class="content"  v-html="goodInfo.contents"></div>
+    <div class="content" v-html="goodInfo.contents"></div>
     <div class="goodstitle row a-c j-c" ref="goodstitle">相关推荐</div>
     <div class="goodstitleTip" v-if="!dataList.length">暂无推荐，敬请期待~</div>
     <div class="goods-wrap row j-b f-w">
@@ -39,6 +39,10 @@
         <span class="value">{{goodInfo.integral}}</span>
         <span class="num">积分</span>
       </div>
+      <div class="mid-wrap col j-c a-c" @click="home">
+        <img class="mid-img" src="./../../assets/img/home.png" alt="" />
+        <div class="mid">商城首页</div>
+      </div>
       <div class="right row j-c a-c" @click="showPopup">立即兑换</div>
     </div>
     <!-- 购买弹出框 -->
@@ -46,6 +50,7 @@
       <img class="pop-img" src="./pop.png" alt="" />
       <div class="pop-des row a-c">本次兑换消耗<div>{{goodInfo.integral}}积分</div>
       </div>
+      <div class="pop-tip  a-c">（因商品特殊，不支持退换，请谨慎选择）</div>
       <div class="pop-btm-wrap row">
         <div class="cancel row a-c j-c" @click="cancel">取消</div>
         <div class="confirm row a-c j-c" @click="_buy">确定</div>
@@ -57,6 +62,7 @@
 </template>
 <script type="text/ecmascript-6">
 import { detail, list, userInfo, buy } from 'api/index'
+import { shareConfig } from 'assets/js/shareConfig.js'
 import { Toast } from 'vant';
 export default {
   data() {
@@ -153,6 +159,7 @@ export default {
           });
         }
         this.title = this.goodInfo.title
+        shareConfig(this.goodInfo.title, 'http://jfmall.app.fuyulove.com/goods/index.html#/serviceDetail?id=' + this.$route.query.id + '&catid=' + this.$route.query.catid, "存钱积分，积分当钱，你来就“兑”！", this.goodInfo.imgurl)
 
       })
     },
@@ -190,6 +197,11 @@ export default {
           }
         })
       }
+    },
+    home() {
+      this.$router.push({
+        path: '/index',
+      })
     },
     // 点击取消
     cancel() {
@@ -280,6 +292,9 @@ export default {
     font-size 30px
     >>>img
       width 100%
+      display block
+    >>>video
+      width 100%
   .btm-wrap
     position fixed
     z-index 10
@@ -290,6 +305,8 @@ export default {
     background #ffffff
     .left
       margin-left 33px
+      width 354px
+      // height 100%
       .total
         font-size 25px
         color #3c3c3c
@@ -300,6 +317,15 @@ export default {
         color #b93662
         font-size 40px
         font-weight 700
+    .mid-wrap
+      width 155px
+      height 100%
+      border-left 1px solid #ededed
+      .mid-img
+        width 32px
+      .mid
+        font-size 25px
+        color #555658
     .right
       width 240px
       background #696198
@@ -318,15 +344,21 @@ export default {
       margin-top 65px
       div
         color #696198
+    .pop-tip
+      color #969696
+      font-size 25px
+      margin-top 10px
     .pop-btm-wrap
       width 100%
       height 87px
-      margin-top 87px
-      border-top 1px solid #f2f2f2
+      margin-top 57px
+      border-top 2px solid #f2f2f2
+      background-color #686194
       .cancel
         width 50%
         color #969696
         height 100%
+        background #ffffff
       .confirm
         width 50%
         background #686194

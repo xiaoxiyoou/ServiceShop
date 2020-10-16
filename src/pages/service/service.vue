@@ -257,4 +257,6 @@ export default {
       padding 23px 30px 35px
       .block
         width 216px
+        height 247px
+
 </style>

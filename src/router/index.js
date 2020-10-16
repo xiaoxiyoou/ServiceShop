@@ -15,7 +15,7 @@ const routes = [{
     name: 'index',
     component: resolve => require(['pages/index/index'], resolve),
     meta: {
-      title: '服务商城',
+      title: '殡企服务积分商城',
       requireAuth: true,
     }
   },
@@ -24,7 +24,7 @@ const routes = [{
     name: 'login',
     component: resolve => require(['pages/login/login'], resolve),
     meta: {
-      title: '服务商城',
+      title: '殡企服务积分商城',
     }
   },
   {
@@ -126,6 +126,35 @@ const routes = [{
       requireAuth: true,
     }
   },
+  {
+    path: '/directions',
+    name: 'directions',
+    component: resolve => require(['pages/directions/directions'], resolve),
+    meta: {
+      title: '商城说明',
+      requireAuth: true,
+    }
+  },
+  {
+    path: '/join',
+    name: 'join',
+    component: resolve => require(['pages/join/join'], resolve),
+    meta: {
+      title: '招募信息',
+      requireAuth: true,
+    }
+  },
+  {
+    path: '/wareList',
+    name: 'wareList',
+    component: resolve => require(['pages/wareList/wareList'], resolve),
+    meta: {
+      title: '现可采购用品',
+      requireAuth: true,
+    }
+  },
+
+
 
 
 

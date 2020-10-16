@@ -54,22 +54,8 @@ export default {
 
       drop1: false,
       drop2: false,
-      value1: 0,
-      value2: 'a',
-      option1: [
-        { text: '筛选品项', value: 0 },
-        { text: 'VI设计', value: 1 },
-        { text: '软件开发', value: 2 },
-        { text: '视频包装', value: 3 },
-        { text: '导师咨询', value: 4 },
-        { text: '销售用品', value: 5 },
-      ],
-      option2: [
-        { text: '筛选积分', value: 'a' },
-        { text: '5千积分以下', value: 'b' },
-        { text: '5千-2万积分', value: 'c' },
-        { text: '2万积分以上', value: 'd' },
-      ],
+
+
       searList: [
         {
           describe: "",

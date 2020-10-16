@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
 var wx = require('weixin-js-sdk')
-export default function wxShare({
-  desc
-} = {}) { 
+export default function wxShare() { 
   let link = 'http://jfmall.app.fuyulove.com/goods/index.html#' +  localStorage.getItem('fromUrl')
   axios.get('http://jfmall.app.fuyulove.com/connect/jssdk', {
       params: {
@@ -43,16 +41,16 @@ export default function wxShare({
     })
     wx.ready(() => {
       wx.onMenuShareAppMessage({
-        title: document.title,
+        title: "殡企服务积分商城",
         link: link,
-        desc: desc,
+        desc: "存钱积分，积分当钱，你来就“兑”！",
         imgUrl: 'http://jfmall.app.fuyulove.com/goods/share.png',
       })
     })
     wx.onMenuShareTimeline({
-      title: document.title,
+      title: "殡企服务积分商城",
       link: link,
-      desc: desc,
+      desc: "存钱积分，积分当钱，你来就“兑”！",
       imgUrl: 'http://jfmall.app.fuyulove.com/goods/share.png',
     })
     wx.error(function () {})

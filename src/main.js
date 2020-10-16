@@ -30,9 +30,8 @@ router.beforeEach((to, from, next) => {
     if (!fromUrl) {
       localStorage.setItem('fromUrl', to.fullPath)
     }
-
     if (localStorage.getItem('userid') != "undefined" && localStorage.getItem('userid') != null && localStorage.getItem('userid') != '' && localStorage.getItem('userid')) {
-      share(document.title, document.title)
+      share()
       next();
     } else {
       next({

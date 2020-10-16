@@ -79,7 +79,8 @@ export default {
     // 切换积分
     getInter(state) {
       this.state = state
-      this.isActive = !this.isActive
+      console.log(state)
+      this.isActive = !state
       this._scorelist()
       this._score()
     },

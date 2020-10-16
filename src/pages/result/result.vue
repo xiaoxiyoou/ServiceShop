@@ -66,7 +66,6 @@ export default {
   top 0px
   width 100%
   height 100%
-  bottom 0
   .sign
     width 148px
     height 148px
@@ -95,7 +94,7 @@ export default {
     font-size 32px
     border 2px solid #4f4683
     margin-top 58px
-    margin-bottom 80px
+    margin-bottom 58px
   .ad-wrap
     width 686px
     position relative

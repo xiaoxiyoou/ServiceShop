@@ -50,7 +50,8 @@ export default {
       }).then(res => {
         console.log('订单详情', res)
         this.orderInfo = res.data.info
-        shareConfig('您的好友已兑换' + this.orderInfo.goodsname, 'http://jfmall.app.fuyulove.com/goods/index.html#/order?orderid=' + this.$route.query.orderid, '点开查看吧~', 'http://jfmall.app.fuyulove.com/goods/share.png')
+        shareConfig('您的好友已兑换' + this.orderInfo.goodsname,  'http://jfmall.app.fuyulove.com/goods/index.html#/serviceDetail?id=' + res.data.info.goods_id+'&catid='+res.data.info.cat_id, "存钱积分，积分当钱，你来就“兑”！", this.orderInfo.imgurl)
+        // shareConfig('您的好友已兑换' + this.orderInfo.goodsname, 'http://jfmall.app.fuyulove.com/goods/index.html#/order?orderid=' + this.$route.query.orderid, '点开查看吧~', 'http://jfmall.app.fuyulove.com/goods/share.png')
 
 
       })
