@@ -38,3 +38,5 @@ export const wareCate = (params) => ajax(BASE_URL + 'api/wares/brand',params)
 export const wareList = (params) => ajax(BASE_URL + 'api/wares/list',params) 
 // 获取采购商品接口
 export const joinSubmit = (params) => ajax(BASE_URL + 'api/wares/join',params,'POST') 
+// 产品询价提交接口：
+export const Inquiry = (params) => ajax(BASE_URL + 'api/wares/Inquiry',params,'POST') 

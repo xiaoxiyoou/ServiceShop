@@ -50,7 +50,7 @@ const routes = [{
     name: 'service',
     component: resolve => require(['pages/service/service'], resolve),
     meta: {
-      title: '享服务',
+      title: '积分尊享服务',
       requireAuth: true,
     }
   },

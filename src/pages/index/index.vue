@@ -2,18 +2,22 @@
   <div class="container col a-c" v-if="showPage">
     <div class="head-wrap row a-c ">
       <img class="headImg" :src="info.headimgurl" alt="">
-      <div class="headName">{{info.nickname}}</div>
+      <div>
+        <div class="headName">{{info.nickname}}</div>
+        <div class="integral" v-if=" parseInt(info.status)">当前积分:{{info.integral}}</div>
+        <div class="integral" v-else>请先绑定手机号</div>
+      </div>
       <div class="headbtn headbtnHover row a-c j-c" v-if=" parseInt(info.status)" @click="signIn">个人中心</div>
       <div class="headbtn row a-c j-c" v-else @click="band">绑定手机号</div>
     </div>
-    <div class="swiper-wrapper col a-c">
+    <!-- <div class="swiper-wrapper col a-c">
       <van-swipe :autoplay="3000" indicator-color="#686194">
         <van-swipe-item v-for="(item, index) in bannerList" :key="index">
           <img :src="item.imgurl" @click="onClick(item.link)" />
         </van-swipe-item>
       </van-swipe>
-    </div>
-    <div class="mid-wrap row j-b">
+    </div> -->
+    <!-- <div class="mid-wrap row j-b">
       <div class="mid-item" @click="integral">
         <img class="mid-img" src="./block_1.png" alt="" />
         <div class="mid-title">当前积分</div>
@@ -23,6 +27,26 @@
         <img class="mid-img" src="./block_2.png" alt="" />
         <div class="mid-how">如何获得？</div>
         <div class="mid-way">进货储值卡得积分</div>
+      </div>
+    </div> -->
+    <div class="bar"></div>
+    <!-- 导航栏 -->
+    <div class="grid-wrap">
+      <div class="grid-title row a-c j-b" @click="service">
+        <div class="grid-title-left row a-c">
+          <div class="vertical"></div>
+          <div class="grid-title-text">积分尊享服务</div>
+        </div>
+        <div class="grid-title-right row a-c">
+          <div class="grid-more">查看更多</div>
+          <img class="more-img" src="./arrow_s.png" alt="" />
+        </div>
+      </div>
+      <div class="grid-list row a-c j-b">
+        <div class="grid-item col a-c j-c" v-for="(item,index) in cateList" :key="index" @click="serviceList(0,item.id,item.name)">
+          <img class="grid-item-img" :src="item.icon" alt="" />
+          <div class="grid-item-text">{{item.name}}</div>
+        </div>
       </div>
     </div>
     <div class="bar"></div>
@@ -43,37 +67,19 @@
       </div>
     </div>
     <div class="bar"></div>
-    <!-- 导航栏 -->
-    <div class="grid-wrap">
-      <div class="grid-title row a-c j-b" @click="service">
-        <div class="grid-title-left row a-c">
-          <div class="vertical"></div>
-          <div class="grid-title-text">现可尊享服务</div>
-        </div>
-        <div class="grid-title-right row a-c">
-          <div class="grid-more">查看更多</div>
-          <img class="more-img" src="./arrow_s.png" alt="" />
-        </div>
-      </div>
-      <div class="grid-list row a-c j-b">
-        <div class="grid-item col a-c j-c" v-for="(item,index) in cateList" :key="index" @click="serviceList(0,item.id,item.name)">
-          <img class="grid-item-img" :src="item.icon" alt="" />
-          <div class="grid-item-text">{{item.name}}</div>
-        </div>
-      </div>
-    </div>
-    <div class="bar"></div>
     <div class="grid-wrap">
       <div class="grid-title row a-c j-b">
         <div class="grid-title-left row a-c">
           <div class="vertical"></div>
-          <div class="grid-title-text">猜你喜欢</div>
+          <div class="grid-title-text">全部服务</div>
         </div>
       </div>
       <van-list v-model="loading" :finished="finished" :finished-text="finishedtext" @load="onLoad">
         <div class="goods-wrap row j-b f-w">
           <div class="goods-item" v-for="(item,index) in dataList" :key="index" @click="serviceDetail(item.id,item.cat_id)">
-            <img class="goods-img" :src="item.imgurl" v-if="item.imgurl" alt="">
+            <div class="goods-catetitle row a-c j-c" :style="{'background':item.color}">{{item.catname}}</div>
+            <img class="goods-img" :src="item.imgurl" v-if="item.imgurl" alt="" :style="{'border':'6px solid ' + item.color}">
+            <!-- <img class="goods-img" :src="item.imgurl" v-if="item.imgurl" alt=""> -->
             <img class="goods-img" src="./../../assets/img/noMsg.png" v-else alt="">
             <div class="goods-title">{{item.title}}</div>
             <div class="row a-c">
@@ -92,6 +98,7 @@ import { getAdver } from 'api/index'
 export default {
   data() {
     return {
+      color: "#666294",
       info: '',
       showPage: false,
       images: [
@@ -110,7 +117,7 @@ export default {
       count: '',
       listStatus: true,
       onLoadtatus: false,
-      wareData: [], 
+      wareData: [],
       wareAdv: [],
 
 
@@ -171,6 +178,8 @@ export default {
       }).then(res => {
         console.log('个人信息', res)
         this.info = res.data.info
+        localStorage.setItem("realname", this.info.realname)
+        localStorage.setItem("mobile", this.info.mobile)
 
       })
     },
@@ -332,7 +341,12 @@ export default {
     .headName
       color #292929
       font-size 28px
-      margin-left 10px
+      margin-left 20px
+    .integral
+      color #8a898a
+      font-size 22px
+      margin-left 20px
+      margin-top 10px
     .headbtn
       position absolute
       right 0
@@ -463,9 +477,19 @@ export default {
         width 336px
         height 441px
         background-color #ffffff
-        border-radius 10px
+        // border-radius 10px
         overflow hidden
         margin-bottom 20px
+        position relative
+        .goods-catetitle
+          position absolute
+          left 6px
+          top 6px
+          width 140px
+          height 50px
+          font-weight 700
+          font-size 28px
+          color #ffffff
         .goods-img
           width 100%
           height 331px

@@ -27,15 +27,25 @@
         <noMessage :noinfoShow="noinfoShow" />
       </van-list>
     </div>
+    <div class="btm row a-c j-c" @click="quiry()">点击了解更多产品</div>
+    <van-popup class="Inquirypopup col a-c" closeable close-icon="close" v-model="popupshow">
+      <img class="popimg" src="./pop.png">
+      <input type="text" v-model="name" placeholder="请输入您的姓名">
+      <input type="number" v-model="mobile" placeholder="请输入您的电话号码">
+      <div class="btn col a-c j-c" @click="popBtn">提交</div>
+      <div class="tip">请填写您的联系方式以便为您安排专员服务</div>
+    </van-popup>
   </div>
 
 </template>
 <script type="text/ecmascript-6">
 import noMessage from 'components/noMessage/noMessage'
-import { wareList, wareCate } from 'api/index'
+import { wareList, wareCate, Inquiry } from 'api/index'
+import { Toast } from 'vant'
 export default {
   data() {
     return {
+      popupshow: false,
       wareData: [],
       active: 1,
       noinfoShow: false,
@@ -50,8 +60,13 @@ export default {
       listStatus: true,
       onLoadtatus: false,
       brandId: "",
-      bannerList: [ { imgurl: require("./banner_2.png") }, { imgurl: require("./banner_3.png") },{ imgurl: require("./banner_1.png") }],
-      wareId: []
+      bannerList: [{ imgurl: require("./banner_2.png") }, { imgurl: require("./banner_3.png") }, { imgurl: require("./banner_1.png") }],
+      wareId: [],
+      name: localStorage.getItem("realname") || "",
+      mobile: localStorage.getItem("mobile") || "",
+      company: "",
+      waresid: "",
+      waresname: "",
 
 
     }
@@ -59,12 +74,51 @@ export default {
   mounted() {
     document.body.scrollTop = document.documentElement.scrollTop = 0
     this.brandId = this.$route.query.brand
-    this.active =  parseInt(this.$route.query.active) + 1
+    this.active = parseInt(this.$route.query.active) + 1
     this._list()
     this._wareCate()
 
   },
   methods: {
+    quiry() {
+
+      this.popupshow = true
+    },
+    popBtn() {
+      const myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+      if (!this.name) {
+        Toast('请输入您的姓名')
+        return false
+      } else if (!this.mobile) {
+        Toast('输入您的手机号码')
+        return false
+      } else if (!myreg.test(this.mobile)) {
+        Toast('手机号格式错误')
+        return false
+      } else {
+        this._Inquiry()
+      }
+
+    },
+    _Inquiry() {
+      Inquiry({
+        name: this.name,
+        mobile: this.mobile,
+        company: this.company,
+        waresid: this.waresid,
+        waresname: this.waresname,
+      }).then(res => {
+        console.log('询价', res)
+        if (res.code == 0) {
+          Toast("申请成功，请耐心等待我们与您联系")
+          this.popupshow = false
+        } else {
+          Toast(res.msg)
+        }
+
+
+      })
+    },
     // 切换
     wareItem() {
       this.loadState()
@@ -260,4 +314,37 @@ export default {
             margin-left 10px
             font-size 24px
             margin-top 15px
+  .btm
+    position fixed
+    height 90px
+    color #ffffff
+    bottom 0
+    width 100%
+    background rgb(104, 97, 148)
+  .Inquirypopup
+    width 560px
+    border-radius 10px
+    overflow hidden
+    .popimg
+      width 100%
+    input
+      width 500px
+      border-radius 10px
+      height 70px
+      border 2px solid rgb(104, 97, 148)
+      margin-top 20px
+      padding 10px
+      font-size 28px
+    .btn
+      width 500px
+      height 70px
+      background rgb(104, 97, 148)
+      border-radius 5px
+      color #ffffff
+      margin-top 20px
+      letter-spacing 14px
+    .tip
+      color #929292
+      font-size 25px
+      margin 20px auto 30px
 </style>
